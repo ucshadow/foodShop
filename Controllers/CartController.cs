@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FoodStore.Models;
+using FoodStore.Infrastructure.LocalAPI;
+using System.Diagnostics;
 
 namespace FoodStore.Controllers
 {
@@ -34,7 +36,7 @@ namespace FoodStore.Controllers
             .FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                cart.AddItem(product, 1);
+                cart.AddItem(product, 1);                
             }
             return RedirectToAction("Index", new { returnUrl });
         }

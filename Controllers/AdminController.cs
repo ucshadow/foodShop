@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace FoodStore.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IProductRepository _repository;

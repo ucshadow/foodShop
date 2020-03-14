@@ -8,7 +8,6 @@ using System.Web.Mvc;
 
 namespace FoodStore.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
 

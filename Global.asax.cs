@@ -1,3 +1,5 @@
+using FoodStore.Entities;
+using FoodStore.WebUI.Infrastructure.Binders;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -12,6 +14,9 @@ namespace FoodStore
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // register the CartModelBinder
+            ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
         }
     }
 }
