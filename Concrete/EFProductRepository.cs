@@ -11,6 +11,34 @@ namespace FoodStore.Concrete
             get { return _context.Products; }
         }
 
+        private static List<Product> _clone { get; set; }
+
+        public List<Product> GetClone()
+        {
+            if(_clone == null)
+            {
+                var z = new List<Product>(Products);
+                _clone = new List<Product>();
+                foreach(var i in z)
+                {
+                    var p = new Product
+                    {
+                        Category = i.Category,
+                        Description = i.Description,
+                        Name = i.Name,
+                        Picture = i.Picture,
+                        Price = i.Price,
+                        ProductID = i.ProductID,
+                        Quantity = i.Quantity,
+                        Size = i.Size,
+                        Unit = i.Unit
+                    };
+                    _clone.Add(p);
+                }
+            }
+            return _clone;
+        }
+
         public void SaveProduct(Product product)
         {
             if (product.ProductID == 0)

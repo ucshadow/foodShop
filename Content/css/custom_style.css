@@ -1,0 +1,9 @@
+﻿.product_container{
+    display: flex;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.main_pg_single_product_container {
+    flex: 1 0 21%;
+}

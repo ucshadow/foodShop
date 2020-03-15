@@ -10,5 +10,7 @@ namespace FoodStore
         void SaveProduct(Product product);
 
         Product DeleteProduct(int productID);
+
+        List<Product> GetClone();
     }
 }
