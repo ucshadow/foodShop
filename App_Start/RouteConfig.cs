@@ -31,6 +31,11 @@ namespace FoodStore
             );
 
             routes.MapRoute(null,
+                "Nutrition/{product}",
+                new { controller = "Nutrition", action = "Index" }
+            );
+
+            routes.MapRoute(null,
                 "{category}",
                 new { controller = "Product", action = "List", page = 1 }
             );

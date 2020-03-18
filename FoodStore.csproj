@@ -191,11 +191,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NavController.cs" />
+    <Compile Include="Controllers\NutritionAPIController.cs" />
     <Compile Include="Controllers\NutritionController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RealTimeSellDataController.cs" />
     <Compile Include="Entities\Cart.cs" />
-    <Compile Include="Entities\Nutrition.cs" />
+    <Compile Include="Models\Nutrition.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ShippingDetails.cs" />
     <Compile Include="Global.asax.cs">
@@ -753,6 +754,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\nutrition.js" />
     <Content Include="Scripts\realTimeSellHandler.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -806,10 +808,11 @@
     <Content Include="Views\Shared\Manage\SetPassword.cshtml" />
     <Content Include="Views\Shared\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Product\SellingNow.cshtml" />
+    <Content Include="Views\Nutrition\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Nutrition\" />
+    <Folder Include="Views\NutritionAPI\" />
     <Folder Include="Views\RealTimeSellData\" />
   </ItemGroup>
   <ItemGroup>

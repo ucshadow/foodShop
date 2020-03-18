@@ -21,7 +21,8 @@ namespace FoodStore.Controllers
         public ProductController(IProductRepository productRepository)
         {
             _repository = productRepository;
-            new RealTimeSellData(_repository);
+            RealTimeSellData.Products = productRepository.GetClone();
+            new RealTimeSellData().Loop();
         }
 
         public ViewResult List(string category, int page = 1, string q = "")

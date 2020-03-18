@@ -8690,5 +8690,15 @@ namespace FoodStore.Infrastructure.LocalAPI
             }
             return res.ToList();
         }
+
+        public static Dictionary<string, string[]> GetNutritionValues(string foodName)
+        {
+
+            if (!Foods.TryGetValue(foodName, out string s))
+            {
+                return new Dictionary<string, string[]>();
+            }
+            return ParseNutritionInfo(s);
+        }
     }
 }

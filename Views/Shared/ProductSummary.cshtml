@@ -17,7 +17,7 @@
                 @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
                 <button><i class="ti-shopping-cart"></i>Add</button>
             }
-            @Html.Partial("NutritionFacts", new Nutrition(@Model))
+            @Html.Partial("NutritionFacts", (@Model.Name))
         </div>
     </div>
 </div>

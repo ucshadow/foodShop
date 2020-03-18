@@ -1,0 +1,35 @@
+﻿@model FoodStore.Models.Nutrition
+@{
+    ViewBag.Title = "ProductNutrition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.Product != null)
+{
+    <h1>Product name: @Model.Product.Name</h1>
+    <h2>The list of foods matching your Product:</h2>
+    <div class="row">
+        <br />
+        <div class="col-sm-5">
+            @foreach (var fname in Model.GetFoodsThatContains(Model.Product.Name))
+            {
+                <button onclick="getNutrition(this.innerText)"
+                        class="list-group-item list-group-item-action">
+                    @fname
+                </button>
+            }
+        </div>
+        <div class="col-sm-5 offset-1" id="showResult">
+
+        </div>
+    </div>
+    @Scripts.Render("~/Scripts/nutrition.js")
+
+}
+else
+{
+    <h1>
+        "No product with that name was found"
+    </h1>
+}
+

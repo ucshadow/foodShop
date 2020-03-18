@@ -1,7 +1,6 @@
 ﻿(() => {
-    // todo: change for azure
     setInterval(() => {
-        fetch('https://localhost:44395/RealTimeSellData/GetSellData', {
+        fetch(window.location.origin + '/RealTimeSellData/GetSellData', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,6 +21,9 @@
 
             let p = document.getElementById('i' + i)
             p.src = data[i].Product.Picture;
+
+            let t = document.getElementById('i_t' + i)
+            t.innerText = data[i].SellCount;
 
         }
     }
