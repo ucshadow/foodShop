@@ -1,0 +1,23 @@
+﻿@model FoodStore.Models.PurchaseHistory
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>History</h2>
+@foreach (var entry in Model.SortedByDate())
+{
+    <h2>On date @entry.Key</h2>
+    foreach (var h in entry.Value)
+    {
+        <div>
+            @h.ProductName: @h.ProductCount
+        </div>
+
+        <div>
+            @h.Price for 1 piece
+        </div>
+    }
+    <div>Total: @Model.CalculateTotalPrice(entry.Value)</div>
+}
+

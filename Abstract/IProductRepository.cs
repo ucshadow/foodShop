@@ -1,7 +1,7 @@
 ﻿using FoodStore.Entities;
 using System.Collections.Generic;
 
-namespace FoodStore
+namespace FoodStore.Abstract
 {
     public interface IProductRepository
     {

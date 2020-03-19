@@ -1,6 +1,8 @@
-﻿using FoodStore.Entities;
+﻿using FoodStore.Abstract;
+using FoodStore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -39,6 +41,7 @@ namespace FoodStore.Controllers
             else
             {
                 // there is something wrong with the data values
+                ViewBag.Message = ("Something went wrong");
                 return View(product);
             }
         }

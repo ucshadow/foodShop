@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="rHolder" style="font-size: 0px">
+    @ViewBag.R
+</div>
+<div class="recipe_holder container-fluid" style="margin-top: 50px; margin-bottom: 50px; display: flex; justify-content: center;">
+    <div class="row no-gutters" style="width: 80%;">
+        <div class="col-sd-4">
+            <img id="cImg" src="..." alt="Loading please wait">
+        </div>
+        <div class="col-sd-7">
+            <div class="card-body" id="cBody">
+                <h5 id="cTitle" class="card-title">Loading...</h5>
+                <p id="cDescription" class="card-text">Loading...</p>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<div class="btn btn-danger">
+    @Html.ActionLink("Get new Recipe", "Index", "RecipeOfTheDay", new { refresh = 1 }, null)
+</div>
+
+@Scripts.Render("~/Scripts/rotd.js")
+    <script type="text/javascript">
+    init();
+    </script>
+

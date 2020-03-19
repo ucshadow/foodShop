@@ -1,9 +1,11 @@
-﻿using FoodStore.Domain.Concrete;
+﻿using FoodStore.Abstract;
+using FoodStore.Domain.Concrete;
 using FoodStore.Entities;
 using System.Collections.Generic;
 
 namespace FoodStore.Concrete
 {
+    // todo: Also migrate the Azure DB
     public class EFProductRepository : IProductRepository
     {
         private readonly EFDbContext _context = new EFDbContext();
@@ -11,14 +13,14 @@ namespace FoodStore.Concrete
             get { return _context.Products; }
         }
 
-        private static List<Product> _clone { get; set; }
+        private static List<Product> Clone { get; set; }
 
         public List<Product> GetClone()
         {
-            if(_clone == null)
+            if(Clone == null)
             {
                 var z = new List<Product>(Products);
-                _clone = new List<Product>();
+                Clone = new List<Product>();
                 foreach(var i in z)
                 {
                     var p = new Product
@@ -33,10 +35,10 @@ namespace FoodStore.Concrete
                         Size = i.Size,
                         Unit = i.Unit
                     };
-                    _clone.Add(p);
+                    Clone.Add(p);
                 }
             }
-            return _clone;
+            return Clone;
         }
 
         public void SaveProduct(Product product)
@@ -65,7 +67,7 @@ namespace FoodStore.Concrete
 
         public Product DeleteProduct(int productID)
         {
-            Product dbEntry = _context.Products.Find(productID);
+            var dbEntry = _context.Products.Find(productID);
             if (dbEntry != null)
             {
                 _context.Products.Remove(dbEntry);

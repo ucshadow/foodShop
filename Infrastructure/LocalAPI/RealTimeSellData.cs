@@ -55,7 +55,7 @@ namespace FoodStore.Infrastructure.LocalAPI
         private void Sell()
         {
             var r = _rnd.Next(1, 100);
-            if(r < 20)
+            if(r < 14)
             {
                 // replace oldest product
                 ReplaceOldest();

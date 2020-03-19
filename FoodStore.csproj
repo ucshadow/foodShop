@@ -176,6 +176,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IOrderProcessor.cs" />
     <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="Abstract\IPurchaseHistoryRepository.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFProductRepository.cs" />
+    <Compile Include="Concrete\EFPurchaseHistoryRepository.cs" />
     <Compile Include="Concrete\OrderProcessor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -194,8 +196,40 @@
     <Compile Include="Controllers\NutritionAPIController.cs" />
     <Compile Include="Controllers\NutritionController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\PurchaseHistoryController.cs" />
     <Compile Include="Controllers\RealTimeSellDataController.cs" />
+    <Compile Include="Controllers\RecipeOfTheDayController.cs" />
     <Compile Include="Entities\Cart.cs" />
+    <Compile Include="Entities\Purchase.cs" />
+    <Compile Include="Migrations\202003131732167_InitialCreate.cs" />
+    <Compile Include="Migrations\202003131732167_InitialCreate.Designer.cs">
+      <DependentUpon>202003131732167_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190650236_AddPurchaseHistory.cs" />
+    <Compile Include="Migrations\202003190650236_AddPurchaseHistory.Designer.cs">
+      <DependentUpon>202003190650236_AddPurchaseHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190659101_ChangedToSqlDate.cs" />
+    <Compile Include="Migrations\202003190659101_ChangedToSqlDate.Designer.cs">
+      <DependentUpon>202003190659101_ChangedToSqlDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190711305_AddedUserId.cs" />
+    <Compile Include="Migrations\202003190711305_AddedUserId.Designer.cs">
+      <DependentUpon>202003190711305_AddedUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.cs" />
+    <Compile Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.Designer.cs">
+      <DependentUpon>202003190723335_ModifiedPurchaseAddedPName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.cs" />
+    <Compile Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.Designer.cs">
+      <DependentUpon>202003190727513_ModifiedPurchaseAddedPPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003190857360_ModifiedDateToString.cs" />
+    <Compile Include="Migrations\202003190857360_ModifiedDateToString.Designer.cs">
+      <DependentUpon>202003190857360_ModifiedDateToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Nutrition.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ShippingDetails.cs" />
@@ -214,6 +248,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\ProductsListViewModel.cs" />
+    <Compile Include="Models\PurchaseHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -756,6 +791,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\nutrition.js" />
     <Content Include="Scripts\realTimeSellHandler.js" />
+    <Content Include="Scripts\rotd.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -808,10 +844,14 @@
     <Content Include="Views\Shared\Manage\SetPassword.cshtml" />
     <Content Include="Views\Shared\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Product\SellingNow.cshtml" />
-    <Content Include="Views\Nutrition\Index.cshtml" />
+    <Content Include="Views\Nutrition\Nutrition.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\PurchaseHistory\Index.cshtml" />
+    <Content Include="Views\RecipeOfTheDay\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\History\" />
     <Folder Include="Views\NutritionAPI\" />
     <Folder Include="Views\RealTimeSellData\" />
   </ItemGroup>
@@ -824,6 +864,29 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202003131732167_InitialCreate.resx">
+      <DependentUpon>202003131732167_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190650236_AddPurchaseHistory.resx">
+      <DependentUpon>202003190650236_AddPurchaseHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190659101_ChangedToSqlDate.resx">
+      <DependentUpon>202003190659101_ChangedToSqlDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190711305_AddedUserId.resx">
+      <DependentUpon>202003190711305_AddedUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.resx">
+      <DependentUpon>202003190723335_ModifiedPurchaseAddedPName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.resx">
+      <DependentUpon>202003190727513_ModifiedPurchaseAddedPPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003190857360_ModifiedDateToString.resx">
+      <DependentUpon>202003190857360_ModifiedDateToString.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

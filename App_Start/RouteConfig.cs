@@ -30,9 +30,20 @@ namespace FoodStore
                 new { page = @"\d+" }
             );
 
+            routes.MapRoute(
+                "Recipe of the day",
+                "recipe",
+                new { controller = "RecipeOfTheDay", action = "Index"}
+            );
+
             routes.MapRoute(null,
                 "Nutrition/{product}",
-                new { controller = "Nutrition", action = "Index" }
+                new { controller = "Nutrition", action = "Nutrition" }
+            );
+
+            routes.MapRoute(null,
+                "Details/{product}",
+                new { controller = "Product", action = "Details" }
             );
 
             routes.MapRoute(null,

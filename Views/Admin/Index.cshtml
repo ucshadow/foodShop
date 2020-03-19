@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="panel panel-default">
@@ -23,14 +23,15 @@
                     <td class="text-right">@item.ProductID</td>
                     <td>@Html.ActionLink(item.Name, "Edit", new { item.ProductID })</td>
                     <td class="text-right">@item.Price.ToString("c")</td>
-                    <td class="text-center">
+                    <td class="text-center row">
                         @using (Html.BeginForm("Delete", "Admin"))
                         {
                             @Html.Hidden("ProductID", item.ProductID)
                             <input type="submit"
-                                    class="btn btn-default btn-xs"
-                                    value="Delete" />
+                                   class="btn btn-danger col-xs-6"
+                                   value="Delete" />
                         }
+                        @Html.ActionLink("Edit", "Edit", new { item.ProductID }, new { @class = "btn btn-primary col-xs-6" })
                     </td>
                 </tr>
             }

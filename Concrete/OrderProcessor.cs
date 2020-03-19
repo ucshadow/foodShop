@@ -1,18 +1,32 @@
 ﻿using FoodStore.Entities;
+using FoodStore.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FoodStore.Domain.Concrete
+namespace FoodStore.Concrete
 {
     public class OrderProcessor : IOrderProcessor
     {
-        public void ProcessOrder(Cart cart, ShippingDetails shippingDetails)
+        private readonly IPurchaseHistoryRepository _pRepository;
+
+        public OrderProcessor(IPurchaseHistoryRepository repository)
         {
-            Console.WriteLine(cart);
-            Console.WriteLine(shippingDetails);
+            _pRepository = repository;
+        }
+
+        public void ProcessOrder(Cart cart, ShippingDetails shippingDetails, string userId)
+        {
+            cart.CartEntries.ForEach(e => {
+                var ph = new Purchase
+                {
+                    PurchaseDate = DateTime.Now.ToString(),
+                    ShippingDetails = shippingDetails,
+                    ProductName = e.Product.Name,
+                    ProductCount = e.Quantity,
+                    UserId = userId,
+                    Price = e.Product.Price
+                };
+                _pRepository.SavePurchase(ph);
+            });
         }
     }
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
+using FoodStore.Abstract;
 using FoodStore.Concrete;
-using FoodStore.Domain.Concrete;
 
 namespace FoodStore.Infrastructure
 {
@@ -26,6 +26,7 @@ namespace FoodStore.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<IProductRepository>().To<EFProductRepository>();
+            _kernel.Bind<IPurchaseHistoryRepository>().To<EFPurchaseHistoryRepository>();
             _kernel.Bind<IOrderProcessor>().To<OrderProcessor>();
         }
     }

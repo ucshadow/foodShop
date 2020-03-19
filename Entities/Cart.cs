@@ -9,15 +9,15 @@ namespace FoodStore.Entities
 {
     public class Cart
     {
-        private readonly List<CartLine> _lineCollection = new List<CartLine>();
+        public readonly List<CartEntry> CartEntries = new List<CartEntry>();
         public void AddItem(Product product, int quantity)
         {
-            CartLine line = _lineCollection
+            CartEntry line = CartEntries
             .Where(p => p.Product.ProductID == product.ProductID)
             .FirstOrDefault();
             if (line == null)
             {
-                _lineCollection.Add(new CartLine
+                CartEntries.Add(new CartEntry
                 {
                     Product = product,
                     Quantity = quantity
@@ -30,22 +30,22 @@ namespace FoodStore.Entities
         }
         public void RemoveLine(Product product)
         {
-            _lineCollection.RemoveAll(l => l.Product.ProductID == product.ProductID);
+            CartEntries.RemoveAll(l => l.Product.ProductID == product.ProductID);
         }
         public decimal ComputeTotalValue()
         {
-            return _lineCollection.Sum(e => e.Product.Price * e.Quantity);
+            return CartEntries.Sum(e => e.Product.Price * e.Quantity);
         }
         public void Clear()
         {
-            _lineCollection.Clear();
+            CartEntries.Clear();
         }
-        public IEnumerable<CartLine> Lines {
-            get { return _lineCollection; }
+        public IEnumerable<CartEntry> Lines {
+            get { return CartEntries; }
         }
     }
 
-    public class CartLine
+    public class CartEntry
     {
         public Product Product { get; set; }
         public int Quantity { get; set; }

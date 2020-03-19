@@ -54,12 +54,22 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                    aria-expanded="false">Pages</a>
                                 <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="/Account/Login">Login</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/Account/Register">Register</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#">Tracking</a></li>
+
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        <li class="nav-item"><a class="nav-link" href="#">Tracking</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/PurchaseHistory/Index">Purchase History</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item"><a class="nav-link" href="/Account/Login">Login</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="/Account/Register">Register</a></li>
+                                    }
+                                    <li class="nav-item"><a class="nav-link" href="/recipe">Recipe of the day</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                            
                         </ul>
 
                         <div class="nav-shop">

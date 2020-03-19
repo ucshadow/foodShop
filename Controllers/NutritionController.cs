@@ -9,9 +9,9 @@ namespace FoodStore.Controllers
     {
         // GET: Nutrition
         [Route("/Nutrition/{product?}")]
-        public ActionResult Index(string product)
+        public ViewResult Nutrition(string productName)
         {
-            return View(new Nutrition(product));
+            return View(new Nutrition(productName));
         }        
     }
 }

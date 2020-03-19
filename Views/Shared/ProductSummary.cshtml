@@ -4,20 +4,30 @@
 <div class="col-md-6 col-lg-4 col-xl-3">
     <div class="card text-center card-product">
         <div class="card-product__img">
-            <img class="card-img" src="@Model.Picture" alt="">
-                
+
+            
+            <a href="@Url.Action("Details", "Product", new {productName = @Model.Name})">
+                <div class="card-product__title btn-info" style="width:100%">@Model.Name</div>
+                <img class="card-img" src="@Model.Picture" alt="">
+            </a>
+
         </div>
         <div class="card-body">
             <p>@Model.Category</p>
-            <h4 class="card-product__title"><a href="single-product.html">@Model.Name</a></h4>
+
+
+
+
             <p class="card-product__price">@Model.Price</p>
             @using (Html.BeginForm("AddToCart", "Cart"))
             {
                 @Html.HiddenFor(x => x.ProductID)
                 @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
-                <button><i class="ti-shopping-cart"></i>Add</button>
+                <button style="margin-bottom:5px;"><i class="ti-shopping-cart"></i>Add</button>
             }
-            @Html.Partial("NutritionFacts", (@Model.Name))
+
+            <div class="btn-danger" style="cursor:pointer">
+            <a href="@Url.Action("Nutrition", "Nutrition", new {productName = @Model.Name})">Nutrition data</a></div>
         </div>
     </div>
 </div>

@@ -27,6 +27,7 @@ _UpgradeReport_Files/
 bin/
 obj/
 TestResults/
+Migrations/
 ###################
 # Web publish log #
 ###################
@@ -76,3 +77,4 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+todo.txt

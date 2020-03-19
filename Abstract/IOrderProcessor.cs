@@ -1,9 +1,9 @@
 ﻿using FoodStore.Entities;
 
-namespace FoodStore
+namespace FoodStore.Abstract
 {
     public interface IOrderProcessor
     {
-        void ProcessOrder(Cart cart, ShippingDetails shippingDetails);
+        void ProcessOrder(Cart cart, ShippingDetails shippingDetails, string userId);
     }
 }

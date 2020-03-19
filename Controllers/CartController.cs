@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using FoodStore.Models;
 using FoodStore.Infrastructure.LocalAPI;
 using System.Diagnostics;
+using FoodStore.Abstract;
+using Microsoft.AspNet.Identity;
 
 namespace FoodStore.Controllers
 {
@@ -63,6 +65,7 @@ namespace FoodStore.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
         {
             if (cart.Lines.Count() == 0)
@@ -71,7 +74,8 @@ namespace FoodStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                _orderProcessor.ProcessOrder(cart, shippingDetails);
+                var userId = User.Identity.GetUserId();
+                _orderProcessor.ProcessOrder(cart, shippingDetails, userId);
                 cart.Clear();
                 return View("Completed");
             }

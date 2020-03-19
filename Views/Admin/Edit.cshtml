@@ -2,7 +2,12 @@
 
 @{
     ViewBag.Title = "Admin: Edit " + @Model.Name;
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(ViewBag.Message != null)
+{
+    <h1 style="color:red">@ViewBag.Message</h1>
 }
 
     <div class="panel">
