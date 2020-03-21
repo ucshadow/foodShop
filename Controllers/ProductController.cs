@@ -16,13 +16,13 @@ namespace FoodStore.Controllers
     {
 
 
-        private readonly IProductRepository _repository;
+        public readonly IProductRepository Repository;
         public int PageSize = 8;
-        private readonly Random _rnd = new Random();
+        public readonly Random Rnd = new Random();
 
         public ProductController(IProductRepository productRepository)
         {
-            _repository = productRepository;
+            Repository = productRepository;
             RealTimeSellData.Products = productRepository.GetClone();
             new RealTimeSellData().Loop();
         }
@@ -34,9 +34,9 @@ namespace FoodStore.Controllers
 
             if(q == null || q.Trim().Length == 0)
             {
-                products = _repository.Products
+                products = Repository.Products
                 .Where(p => category == null || p.Category == category)
-                .OrderBy(p => category == null ? _rnd.Next() : p.ProductID)
+                .OrderBy(p => category == null ? Rnd.Next() : p.ProductID)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize);
             }
@@ -48,7 +48,7 @@ namespace FoodStore.Controllers
                 {
                     x.Add(i);
                 }
-                var tempProducts = _repository.Products
+                var tempProducts = Repository.Products
                 //.Where(p => p.Name.ToLower().Contains(parsed))
                 .Where(p => p.Name.ToLower().Split(' ').ToHashSet().Intersect(x).Count() > 0);
 
@@ -130,7 +130,10 @@ namespace FoodStore.Controllers
         [Route("/Details/{product?}")]
         public ViewResult Details(string productName)
         {
-            var x = _repository.Products.FirstOrDefault(e => e.Name == productName);
+            var x = Repository.Products.FirstOrDefault(e => e.Name == productName);
+            // this may be null..
+            var moreFromCategory = Repository.Products.Where(e => e.Category == x.Category).Take(4).ToList();
+            ViewBag.More = moreFromCategory;            
             return View(x);
         }
 
@@ -142,13 +145,12 @@ namespace FoodStore.Controllers
             }
             if(category == "Search Results")
             {
-                return _repository.Products
+                return Repository.Products
                     .Where(p => p.Name.ToLower().Contains(q.ToLower()))
                     .Count();
             }
-            return _repository.Products.Where(e => e.Category == category).Count();
+            return Repository.Products.Where(e => e.Category == category).Count();
         }
-
 
     }
 }

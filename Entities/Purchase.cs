@@ -13,6 +13,8 @@ namespace FoodStore.Entities
         public String PurchaseDate { get; set; }
         public ShippingDetails ShippingDetails { get; set; }
         public decimal Price { get; set; }
+        public int Rating { get; set; }
+        public int ProductId { get; set; }
 
     }
 }

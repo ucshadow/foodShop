@@ -5,11 +5,12 @@
     <div class="card text-center card-product">
         <div class="card-product__img">
 
-            
+
             <a href="@Url.Action("Details", "Product", new {productName = @Model.Name})">
                 <div class="card-product__title btn-info" style="width:100%">@Model.Name</div>
                 <img class="card-img" src="@Model.Picture" alt="">
             </a>
+            <div class="card-product__title btn-default" style="width:100%">[Rating: @Model.Rating] [Votes: @Model.NumberOfVotes]</div>
 
         </div>
         <div class="card-body">

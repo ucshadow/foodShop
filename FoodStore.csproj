@@ -200,34 +200,17 @@
     <Compile Include="Controllers\RealTimeSellDataController.cs" />
     <Compile Include="Controllers\RecipeOfTheDayController.cs" />
     <Compile Include="Entities\Cart.cs" />
+    <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Purchase.cs" />
-    <Compile Include="Migrations\202003131732167_InitialCreate.cs" />
-    <Compile Include="Migrations\202003131732167_InitialCreate.Designer.cs">
-      <DependentUpon>202003131732167_InitialCreate.cs</DependentUpon>
+    <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
+    <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
+    <Compile Include="Migrations\202003131732230_InitialCreate.cs" />
+    <Compile Include="Migrations\202003131732230_InitialCreate.Designer.cs">
+      <DependentUpon>202003131732230_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003190650236_AddPurchaseHistory.cs" />
-    <Compile Include="Migrations\202003190650236_AddPurchaseHistory.Designer.cs">
-      <DependentUpon>202003190650236_AddPurchaseHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003190659101_ChangedToSqlDate.cs" />
-    <Compile Include="Migrations\202003190659101_ChangedToSqlDate.Designer.cs">
-      <DependentUpon>202003190659101_ChangedToSqlDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003190711305_AddedUserId.cs" />
-    <Compile Include="Migrations\202003190711305_AddedUserId.Designer.cs">
-      <DependentUpon>202003190711305_AddedUserId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.cs" />
-    <Compile Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.Designer.cs">
-      <DependentUpon>202003190723335_ModifiedPurchaseAddedPName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.cs" />
-    <Compile Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.Designer.cs">
-      <DependentUpon>202003190727513_ModifiedPurchaseAddedPPrice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003190857360_ModifiedDateToString.cs" />
-    <Compile Include="Migrations\202003190857360_ModifiedDateToString.Designer.cs">
-      <DependentUpon>202003190857360_ModifiedDateToString.cs</DependentUpon>
+    <Compile Include="Migrations\202003210658543_AddedFieldsToUser.cs" />
+    <Compile Include="Migrations\202003210658543_AddedFieldsToUser.Designer.cs">
+      <DependentUpon>202003210658543_AddedFieldsToUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Nutrition.cs" />
@@ -792,6 +775,7 @@
     <Content Include="Scripts\nutrition.js" />
     <Content Include="Scripts\realTimeSellHandler.js" />
     <Content Include="Scripts\rotd.js" />
+    <Content Include="Scripts\vote.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -851,7 +835,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\History\" />
     <Folder Include="Views\NutritionAPI\" />
     <Folder Include="Views\RealTimeSellData\" />
   </ItemGroup>
@@ -866,26 +849,11 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003131732167_InitialCreate.resx">
-      <DependentUpon>202003131732167_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003131732230_InitialCreate.resx">
+      <DependentUpon>202003131732230_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190650236_AddPurchaseHistory.resx">
-      <DependentUpon>202003190650236_AddPurchaseHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190659101_ChangedToSqlDate.resx">
-      <DependentUpon>202003190659101_ChangedToSqlDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190711305_AddedUserId.resx">
-      <DependentUpon>202003190711305_AddedUserId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190723335_ModifiedPurchaseAddedPName.resx">
-      <DependentUpon>202003190723335_ModifiedPurchaseAddedPName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190727513_ModifiedPurchaseAddedPPrice.resx">
-      <DependentUpon>202003190727513_ModifiedPurchaseAddedPPrice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003190857360_ModifiedDateToString.resx">
-      <DependentUpon>202003190857360_ModifiedDateToString.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003210658543_AddedFieldsToUser.resx">
+      <DependentUpon>202003210658543_AddedFieldsToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

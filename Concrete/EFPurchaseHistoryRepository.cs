@@ -2,6 +2,8 @@
 using FoodStore.Domain.Concrete;
 using FoodStore.Entities;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace FoodStore.Concrete
 {
@@ -25,8 +27,34 @@ namespace FoodStore.Concrete
 
         public void SavePurchase(Purchase purchase)
         {
-            _context.PurchaseHistory.Add(purchase);         
-            _context.SaveChanges();
+            if(purchase.PurchaseID == 0)
+            {
+                _context.PurchaseHistory.Add(purchase);
+            }       
+            else
+            {
+                // should use async :D
+                Purchase dbEntry = _context.PurchaseHistory.Find(purchase.PurchaseID);
+                if(dbEntry != null)
+                {
+                    dbEntry.Rating = purchase.Rating;
+                }
+            }
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+                throw;
+            }
         }
     }
 }

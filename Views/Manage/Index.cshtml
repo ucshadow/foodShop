@@ -3,12 +3,15 @@
     ViewBag.Title = "Manage";
 }
 
+@using FoodStore.HtmlHelpers
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
     <h4>Change your account settings</h4>
     <hr />
+    <img src="@User.Identity.GetImage()" />
     <dl class="dl-horizontal">
         <dt>Password:</dt>
         <dd>

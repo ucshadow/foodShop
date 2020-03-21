@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using FoodStore.Entities
+
 <h2>Details</h2>
 
 <div>
@@ -74,4 +76,17 @@
         @Html.Partial("ProductSummary", @Model)
 
     </dl>
+</div>
+<br/>
+<br/>
+<br/>
+<h3>More from category: <span style="color:forestgreen">@Model.Category</span></h3>
+<div style="border-top:1px solid gray;margin-top:50px;margin-bottom:50px;padding-top:50px;">
+    
+    <div class="container-fluid row">
+        @foreach (var p in ViewBag.More)
+        {
+            @Html.Partial("ProductSummary", (Product)p)
+        }
+    </div>
 </div>

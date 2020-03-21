@@ -10,14 +10,29 @@
     <h2>On date @entry.Key</h2>
     foreach (var h in entry.Value)
     {
-        <div>
-            @h.ProductName: @h.ProductCount
-        </div>
+<div class="container-fluid row" style="border: 1px solid gray;margin-bottom: 3px;">
+    <div class="col-sm-5">
+        @h.ProductName: @h.ProductCount for @h.Price a piece
+    </div>
+    <div class="col-sm-4">
+        @if (h.Rating > 0)
+        {
+            <button class="btn btn-danger">@h.Rating</button>
+        }
+        else
+        {
+            for (var i = 1; i < 6; i++)
+            {
+                <button  class="btn btn-default" onclick="vote(@i, @h.PurchaseID)">@i</button>
+            }
+        }
 
-        <div>
-            @h.Price for 1 piece
-        </div>
+
+    </div>
+    <div class="col-sm-2">My rating: @h.Rating</div>
+</div>
     }
     <div>Total: @Model.CalculateTotalPrice(entry.Value)</div>
 }
+@Scripts.Render("~/Scripts/vote.js")
 

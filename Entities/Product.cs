@@ -34,5 +34,8 @@ namespace FoodStore.Entities
 
         [Required(ErrorMessage = "Please specify a picture url")]
         public string Picture { get; set; }
+
+        public decimal Rating { get; set; }
+        public int NumberOfVotes { get; set; }
     }
 }

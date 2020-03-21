@@ -2,6 +2,8 @@
 using FoodStore.Domain.Concrete;
 using FoodStore.Entities;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace FoodStore.Concrete
 {
@@ -33,7 +35,9 @@ namespace FoodStore.Concrete
                         ProductID = i.ProductID,
                         Quantity = i.Quantity,
                         Size = i.Size,
-                        Unit = i.Unit
+                        Unit = i.Unit,
+                        Rating = i.Rating,
+                        NumberOfVotes = i.NumberOfVotes
                     };
                     Clone.Add(p);
                 }
@@ -53,16 +57,33 @@ namespace FoodStore.Concrete
                 if (dbEntry != null)
                 {
                     dbEntry.Name = product.Name;
-                    dbEntry.Description = product.Description;
+                    dbEntry.Description = product.Description == null || product.Description.Trim().Length == 0 ? "No description provided" : product.Description;
                     dbEntry.Price = product.Price;
                     dbEntry.Category = product.Category;
                     dbEntry.Quantity = product.Quantity;
                     dbEntry.Size = product.Size;
                     dbEntry.Unit = product.Unit;
                     dbEntry.Picture = product.Picture;
+                    dbEntry.Rating = product.Rating;
+                    dbEntry.NumberOfVotes = product.NumberOfVotes;
                 }
             }
-            _context.SaveChanges();
+            // this may throw validation errors and fail silently so Ill leave it like this :D
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+                throw;
+            }
         }
 
         public Product DeleteProduct(int productID)

@@ -23,7 +23,8 @@ namespace FoodStore.Concrete
                     ProductName = e.Product.Name,
                     ProductCount = e.Quantity,
                     UserId = userId,
-                    Price = e.Product.Price
+                    Price = e.Product.Price,
+                    ProductId = e.Product.ProductID
                 };
                 _pRepository.SavePurchase(ph);
             });

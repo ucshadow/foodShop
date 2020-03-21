@@ -1,0 +1,1 @@
+﻿update Products set NumberOfVotes = 0;
