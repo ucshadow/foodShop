@@ -28,6 +28,7 @@ namespace FoodStore.Infrastructure
             _kernel.Bind<IProductRepository>().To<EFProductRepository>();
             _kernel.Bind<IPurchaseHistoryRepository>().To<EFPurchaseHistoryRepository>();
             _kernel.Bind<IOrderProcessor>().To<OrderProcessor>();
+            _kernel.Bind<ICommentsRepository>().To<EFCommentRepository>();
         }
     }
 }

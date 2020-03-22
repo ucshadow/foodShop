@@ -19,6 +19,8 @@ namespace FoodStore
 
             // register the CartModelBinder
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
+            
+            Hooks.AddCustomHooks();
         }
     }
 }

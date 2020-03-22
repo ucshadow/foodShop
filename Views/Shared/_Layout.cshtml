@@ -25,7 +25,8 @@
                 @using (Html.BeginForm("List", "Product", new { category = "Search Results" }))
                 {
                     @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
-                    <input class="form-control" name="q" type="text" placeholder="Search" aria-label="Search" style="max-width: 400px;">
+                    <input class="form-control" name="q" type="text" placeholder="Search" aria-label="Search"
+                           style="max-width: 400px;" id="searchInput"> 
                 }
 
                 <div class="container">
@@ -179,6 +180,7 @@
     <!--================ End footer Area  =================-->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/realTimeSearch.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

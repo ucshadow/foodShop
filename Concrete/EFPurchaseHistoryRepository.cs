@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace FoodStore.Concrete
 {
+    //todo should move to async
     public class EFPurchaseHistoryRepository : IPurchaseHistoryRepository
     {
 

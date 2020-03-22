@@ -26,7 +26,7 @@ namespace FoodStore
     {
         bootstrapper.ShutDown();
     }
-
+         
     private static IKernel CreateKernel()
     {
         var kernel = new StandardKernel();

@@ -23,8 +23,11 @@ namespace FoodStore.Controllers
         public ProductController(IProductRepository productRepository)
         {
             Repository = productRepository;
-            RealTimeSellData.Products = productRepository.GetClone();
-            new RealTimeSellData().Loop();
+            if(RealTimeSellData.Products == null)
+            {
+                RealTimeSellData.Products = productRepository.GetClone();
+                new RealTimeSellData().Loop();
+            }
         }
 
         public ViewResult List(string category, int page = 1, string q = "")
@@ -49,7 +52,6 @@ namespace FoodStore.Controllers
                     x.Add(i);
                 }
                 var tempProducts = Repository.Products
-                //.Where(p => p.Name.ToLower().Contains(parsed))
                 .Where(p => p.Name.ToLower().Split(' ').ToHashSet().Intersect(x).Count() > 0);
 
                 searchReultsCount = tempProducts.Count();
@@ -75,6 +77,16 @@ namespace FoodStore.Controllers
                 SearchQuery = q
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GetSearchData(FoodName foodName)
+        {
+            var parsed = ParseNameForSearch(foodName.Name.ToLower());           
+            var res = RealTimeSellData.Products
+                .Where(p => p.Name.ToLower().Contains(parsed));
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         private string ParseNameForSearch(string n)

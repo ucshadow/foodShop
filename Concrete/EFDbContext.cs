@@ -7,5 +7,6 @@ namespace FoodStore.Domain.Concrete
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Purchase> PurchaseHistory { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
