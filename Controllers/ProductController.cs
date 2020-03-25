@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using FoodStore.HtmlHelpers;
 
 namespace FoodStore.Controllers
 {
@@ -17,12 +18,19 @@ namespace FoodStore.Controllers
 
 
         public readonly IProductRepository Repository;
+        private readonly IPurchaseHistoryRepository _purchaseHistoryRepository;
+        private readonly ICommentsRepository _commentsRepository;
+        private readonly IPublicProfilesRepository _ppRepository;
         public int PageSize = 8;
         public readonly Random Rnd = new Random();
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IPublicProfilesRepository ppRepository,
+            IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository)
         {
             Repository = productRepository;
+            _purchaseHistoryRepository = pRepository;
+            _commentsRepository = commentsRepository;
+            _ppRepository = ppRepository;
             if(RealTimeSellData.Products == null)
             {
                 RealTimeSellData.Products = productRepository.GetClone();
@@ -141,12 +149,45 @@ namespace FoodStore.Controllers
 
         [Route("/Details/{product?}")]
         public ViewResult Details(string productName)
+        {   
+            // heavy db calls ahead, maybe it could be simplified using relations?
+            var p = Repository.Products.FirstOrDefault(e => e.Name == productName);
+            var productDisplayed = new ProductModel 
+            {
+                Product = p,
+                Related = Repository.Products.Where(e => e.Category == p.Category).Take(4).ToList(),
+                IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
+
+                OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
+            };
+
+            var allCommentsForThisProduct = _commentsRepository.GetProductComments(p.ProductID);
+            foreach(var comment in allCommentsForThisProduct)
+            {
+                var purchase = _purchaseHistoryRepository.PurchaseHistory.FirstOrDefault(e => e.UserId == comment.AspNetUserId && e.ProductId == p.ProductID);
+                productDisplayed.Comments.Add(new CommentUserModel
+                {
+                    Comment = comment,
+                    User = _ppRepository.GetCommentPublicProfile(comment.AspNetUserId),
+                    Rating = purchase?.Rating,
+                    PurchasedOn = purchase?.PurchaseDate
+                });
+            }
+                
+
+
+            return View(productDisplayed);
+        }
+
+        private bool IsAllowedToComment(Product p)
         {
-            var x = Repository.Products.FirstOrDefault(e => e.Name == productName);
-            // this may be null..
-            var moreFromCategory = Repository.Products.Where(e => e.Category == x.Category).Take(4).ToList();
-            ViewBag.More = moreFromCategory;            
-            return View(x);
+            // only one comment per product, should add edit comment in the future
+            var hasPurchesThisProduct = _purchaseHistoryRepository.PurchaseHistory
+                .FirstOrDefault(e => e.ProductId == p.ProductID && e.UserId == User.Identity.GetUserId()) != null;
+
+            var hasCommentedYet = _commentsRepository.GetUserComments(User.Identity.GetUserId()).FirstOrDefault(e => e.ProductID == p.ProductID) != null;
+
+            return hasPurchesThisProduct && !hasCommentedYet;
         }
 
         private int TotalItems(string category, string q)

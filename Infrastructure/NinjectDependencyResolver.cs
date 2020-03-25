@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Ninject;
 using FoodStore.Abstract;
 using FoodStore.Concrete;
+using Ninject.Web.Common;
 
 namespace FoodStore.Infrastructure
 {
@@ -25,10 +26,11 @@ namespace FoodStore.Infrastructure
         }
         private void AddBindings()
         {
-            _kernel.Bind<IProductRepository>().To<EFProductRepository>();
-            _kernel.Bind<IPurchaseHistoryRepository>().To<EFPurchaseHistoryRepository>();
-            _kernel.Bind<IOrderProcessor>().To<OrderProcessor>();
-            _kernel.Bind<ICommentsRepository>().To<EFCommentRepository>();
+            _kernel.Bind<IProductRepository>().To<EFProductRepository>().InRequestScope();
+            _kernel.Bind<IPurchaseHistoryRepository>().To<EFPurchaseHistoryRepository>().InRequestScope();
+            _kernel.Bind<IOrderProcessor>().To<OrderProcessor>().InRequestScope();
+            _kernel.Bind<ICommentsRepository>().To<EFCommentRepository>().InRequestScope();
+            _kernel.Bind<IPublicProfilesRepository>().To<EFPublicProfileRepository>().InRequestScope();
         }
     }
 }

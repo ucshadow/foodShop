@@ -15,6 +15,7 @@ namespace FoodStore.Entities
         public decimal Price { get; set; }
         public int Rating { get; set; }
         public int ProductId { get; set; }
+        
 
     }
 }

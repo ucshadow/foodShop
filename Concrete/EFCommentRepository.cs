@@ -30,7 +30,7 @@ namespace FoodStore.Concrete
             return _context.Comments.Where(e => e.ProductID == productId);
         }
 
-        public IEnumerable<Comment> GetUserComments(int userId)
+        public IEnumerable<Comment> GetUserComments(string userId)
         {
             return _context.Comments.Where(e => e.AspNetUserId == userId);
         }
@@ -40,6 +40,7 @@ namespace FoodStore.Concrete
             if(comment.CommentId == 0)
             {
                 _context.Comments.Add(comment);
+                Save();
                 return comment;
             }
 
@@ -51,6 +52,12 @@ namespace FoodStore.Concrete
                 dbEntry.Content = comment.Content;
                 dbEntry.Likes = comment.Likes;
             }
+            Save();
+            return dbEntry;
+        }
+
+        private void Save()
+        {
             try
             {
                 _context.SaveChanges();
@@ -66,7 +73,6 @@ namespace FoodStore.Concrete
                 }
                 throw;
             }
-            return dbEntry;
         }
 
         public async Task<Comment> VoteOnComment(int commentId, int vote)

@@ -1,92 +1,91 @@
-﻿@model FoodStore.Entities.Product
+﻿@model FoodStore.Models.ProductModel
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using FoodStore.Entities
+@using FoodStore.HtmlHelpers
 
 <h2>Details</h2>
+<div>
+    @Model.Product.Name
+</div>
+<br />
+
+<div>
+    @Model.Product.Category
+</div>
+<br />
+
+<div>
+    @Model.Product.Description
+</div>
+<br />
+
+<div>
+    Number of comments: @Model.Comments.Count()
+</div>
+<br />
 
 <div>
     <h4>Product</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Unit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Unit)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Picture)
-        </dt>
-
-        @Html.Partial("ProductSummary", @Model)
-
-    </dl>
+    @Html.Partial("ProductSummary", @Model.Product)
 </div>
-<br/>
-<br/>
-<br/>
-<h3>More from category: <span style="color:forestgreen">@Model.Category</span></h3>
+<br />
+<br />
+<br />
+<h3>More from category: <span style="color:forestgreen">@Model.Product.Category</span></h3>
 <div style="border-top:1px solid gray;margin-top:50px;margin-bottom:50px;padding-top:50px;">
-    
+
     <div class="container-fluid row">
-        @foreach (var p in ViewBag.More)
+        @foreach (var p in @Model.Related)
         {
-            @Html.Partial("ProductSummary", (Product)p)
+            @Html.Partial("ProductSummary", p)
         }
     </div>
 </div>
+<br />
+
+@if (Model.IsCommentAllowedForCurrentUser)
+{
+    @Html.Partial("~/Views/Comment/_AddComment.cshtml")
+}
+else
+{
+    <div class="add_comment">
+        You need to purchase this product to be allowed to comment or you already commented
+    </div>
+}
+
+<br />
+@if (Model.Comments.Count() > 0)
+{
+    <div class="product_comments">
+        @foreach (var comment in Model.Comments)
+        {
+            var src = @comment.User != null ? @comment.User.Avatar : "some image";
+            var name = @comment.User != null ? @comment.User.Name : "User no longer exists :D";
+            <div style="padding:20px;">
+                <div>
+                    <div>
+                        <a href="/profiles/@name"><img src="@src" style="max-height:4em; margin-right: 50px;" /></a>
+                        @name , rating: @comment.Rating , purchased on: @comment.PurchasedOn
+                    </div>
+                </div>
+                <div style="padding: 10px; border: 1px solid @(User.Identity.GetUserId() == comment.Comment.AspNetUserId ? "red" : "black")">
+                    @comment.Comment.Content
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+}
+else
+{
+    <div class="product_comments">
+        No comments yet
+    </div>
+}

@@ -1,0 +1,24 @@
+﻿@model FoodStore.Models.PublicProfileModel
+
+@{
+    ViewBag.Title = "PublicProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using FoodStore.Entities
+
+<h1>@Model.Profile.Name</h1>
+<img src="@Model.Profile.Avatar" />
+<h1>From: @Model.Profile.City</h1>
+
+@if(Model.Profile.ShowPurchaseHistory && ViewBag.PH != null)
+{
+    var list = (List<Purchase>)ViewBag.PH;
+
+    foreach(var ph in list)
+    {
+        var link = "/Product/Details?productName=" + ph.ProductName;
+        <div><a href="@link">@ph.ProductName</a> purchased on @ph.PurchaseDate</div>
+    }
+}
+

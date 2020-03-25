@@ -10,7 +10,7 @@ namespace FoodStore.Entities
     {
         public int CommentId { get; set; }
         public int ProductID { get; set; } // Purchase also has a refrence, but this allows for anon comments
-        public int AspNetUserId { get; set; } // match the table / column name, should auto foreign key?
+        public string AspNetUserId { get; set; } // match the table / column name, should auto foreign key?
         public int PurchaseID { get; set; }
         public string Content { get; set; }
         public string CommentType { get; set; } // could be comment, question or answer

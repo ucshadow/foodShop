@@ -1,0 +1,84 @@
+﻿@model FoodStore.Models.PublicProfileModel
+@{
+    ViewBag.Title = "PublicProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div>
+        Public profile
+        @if (@Model.Profile == null)
+        {
+            <h2>You have no profile data</h2>
+            using (Html.BeginForm("SaveProfile", "PublicProfile"))
+            {
+                @Html.ValidationSummary()
+                <br />
+                <br />
+
+                <label for="Profile.Name">Name</label>
+                @Html.EditorFor(m => m.Profile.Name)
+                @Html.ValidationMessageFor(m => m.Profile.Name, "*")
+                <br />
+                <br />
+
+                <label for="Profile.City">City</label>
+                @Html.EditorFor(m => m.Profile.City)
+
+                <br />
+                <br />
+                <label for="Profile.ShowPurchaseHistory">Make your purchase history public</label>
+                @Html.EditorFor(m => m.Profile.ShowPurchaseHistory)
+
+                <br />
+                <br />
+                <label for="Profile.Avatar">Avatar url</label>
+                @Html.EditorFor(m => m.Profile.Avatar)
+
+                <br />
+                <br />
+
+                <input type="submit" value="Submit" />
+
+
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("EditProfile", "PublicProfile"))
+            {
+                <br />
+                <br />
+
+
+                @Html.EditorFor(m => m.Profile.Name)
+                @Html.ValidationMessageFor(m => m.Profile.Name)
+                <br />
+                <br />
+
+                @Html.EditorFor(m => m.Profile.City)
+
+                <br />
+                <br />
+                @Html.EditorFor(m => m.Profile.ShowPurchaseHistory) @Model.Profile.ShowPurchaseHistory
+
+                <br />
+                <br />
+                @Html.EditorFor(m => m.Profile.Avatar)
+
+                <br />
+                <br />
+
+                if (Model.Profile.Avatar != null)
+                {
+                    <img src="@Model.Profile.Avatar" />
+                }
+
+                <br />
+                <br />
+                <input type="submit" value="Submit" />
+            }
+        }
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

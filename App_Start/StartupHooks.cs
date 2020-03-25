@@ -1,8 +1,10 @@
-﻿using FoodStore.Infrastructure.LocalAPI;
+﻿using FoodStore.HtmlHelpers;
+using FoodStore.Infrastructure.LocalAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 
 namespace FoodStore
 {

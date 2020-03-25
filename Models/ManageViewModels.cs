@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using FoodStore.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -12,6 +13,8 @@ namespace FoodStore.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        public PublicProfileModel PublicProfile { get; set; }
     }
 
     public class ManageLoginsViewModel

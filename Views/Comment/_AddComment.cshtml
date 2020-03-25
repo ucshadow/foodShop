@@ -1,0 +1,11 @@
+﻿@if (Model.IsCommentAllowedForCurrentUser)
+{
+    <div>
+        Add a comment for @Model.Product.Name
+        @using (Html.BeginForm("Create", "Comment"))
+        {<textarea name="comment" maxlength="500" style="resize: both; width: 50%"></textarea>
+            @Html.Hidden("productId", (int)Model.Product.ProductID)
+            <button style="margin-bottom:5px;">Submit</button>
+        }
+    </div>
+}

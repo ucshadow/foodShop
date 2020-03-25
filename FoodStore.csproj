@@ -177,6 +177,7 @@
     <Compile Include="Abstract\ICommentsRepository.cs" />
     <Compile Include="Abstract\IOrderProcessor.cs" />
     <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="Abstract\IPublicProfilesRepository.cs" />
     <Compile Include="Abstract\IPurchaseHistoryRepository.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -188,30 +189,60 @@
     <Compile Include="Concrete\EFCommentRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFProductRepository.cs" />
+    <Compile Include="Concrete\EFPublicProfileRepository.cs" />
     <Compile Include="Concrete\EFPurchaseHistoryRepository.cs" />
     <Compile Include="Concrete\OrderProcessor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\NutritionAPIController.cs" />
     <Compile Include="Controllers\NutritionController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\PublicProfileController.cs" />
     <Compile Include="Controllers\PurchaseHistoryController.cs" />
     <Compile Include="Controllers\RealTimeSellDataController.cs" />
     <Compile Include="Controllers\RecipeOfTheDayController.cs" />
     <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\PublicProfile.cs" />
     <Compile Include="Entities\Purchase.cs" />
     <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
+    <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.Designer.cs">
       <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003240636116_ChangedFieldInHistoryToString.cs" />
+    <Compile Include="Migrations\202003240636116_ChangedFieldInHistoryToString.Designer.cs">
+      <DependentUpon>202003240636116_ChangedFieldInHistoryToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241311381_AddedPublicProfiles.cs" />
+    <Compile Include="Migrations\202003241311381_AddedPublicProfiles.Designer.cs">
+      <DependentUpon>202003241311381_AddedPublicProfiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241316088_AddedPublicProfiles2.cs" />
+    <Compile Include="Migrations\202003241316088_AddedPublicProfiles2.Designer.cs">
+      <DependentUpon>202003241316088_AddedPublicProfiles2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241441115_ChangedPublicProfileToInt.cs" />
+    <Compile Include="Migrations\202003241441115_ChangedPublicProfileToInt.Designer.cs">
+      <DependentUpon>202003241441115_ChangedPublicProfileToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241450141_ChangedThenameOfIdfield.cs" />
+    <Compile Include="Migrations\202003241450141_ChangedThenameOfIdfield.Designer.cs">
+      <DependentUpon>202003241450141_ChangedThenameOfIdfield.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.cs" />
+    <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.Designer.cs">
+      <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CommentUserModel.cs" />
     <Compile Include="Models\Nutrition.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ShippingDetails.cs" />
@@ -229,7 +260,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProductsListViewModel.cs" />
+    <Compile Include="Models\PublicProfileModel.cs" />
     <Compile Include="Models\PurchaseHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -832,11 +865,14 @@
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\PurchaseHistory\Index.cshtml" />
     <Content Include="Views\RecipeOfTheDay\Index.cshtml" />
+    <Content Include="Views\Comment\_AddComment.cshtml" />
+    <Content Include="Views\PublicProfile\Index.cshtml" />
+    <Content Include="Views\PublicProfile\PublicProfile.cshtml" />
+    <Content Include="Views\Shared\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\NutritionAPI\" />
-    <Folder Include="Views\RealTimeSellData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -851,6 +887,24 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003210946255_AddedComments.resx">
       <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003240636116_ChangedFieldInHistoryToString.resx">
+      <DependentUpon>202003240636116_ChangedFieldInHistoryToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241311381_AddedPublicProfiles.resx">
+      <DependentUpon>202003241311381_AddedPublicProfiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241316088_AddedPublicProfiles2.resx">
+      <DependentUpon>202003241316088_AddedPublicProfiles2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241441115_ChangedPublicProfileToInt.resx">
+      <DependentUpon>202003241441115_ChangedPublicProfileToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241450141_ChangedThenameOfIdfield.resx">
+      <DependentUpon>202003241450141_ChangedThenameOfIdfield.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003250702076_somethingChangedWithUserProfile.resx">
+      <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

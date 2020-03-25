@@ -10,7 +10,7 @@ namespace FoodStore.Abstract
     public interface ICommentsRepository
     {
         IEnumerable<Comment> GetProductComments(int productId);
-        IEnumerable<Comment> GetUserComments(int userId);
+        IEnumerable<Comment> GetUserComments(string userId);
         Task<Comment> SaveComment(Comment comment);
         Task<Comment> DeleteComment(int commentId);
         Task<Comment> VoteOnComment(int commentId, int vote);
