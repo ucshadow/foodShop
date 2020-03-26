@@ -1,6 +1,8 @@
-﻿using FoodStore.Entities;
+﻿using FoodStore.Domain.Concrete;
+using FoodStore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -11,139 +13,84 @@ namespace FoodStore.Infrastructure.LocalAPI
     public class RealTimeSellData
     {
         private readonly Random _rnd = new Random();
-        public static List<TrackedProduct> P = new List<TrackedProduct>();
-        private int _updateIntervalInSeconds = 3;
-        public static List<Product> Products;
-        private Thread _t;
+        public static List<TrackedProduct> P = new List<TrackedProduct>();        
+        public static List<Purchase> LastSold { get; set; }
+        private readonly EFDbContext _context;
 
-        // cast a chance that a tracked product is sold or a new one is added
-        // either update tracked counter or replace the lowest
-
-        public void Loop()
+        public RealTimeSellData()
         {
-            if (_t != null) return;
-            _t = new Thread(() =>
-            {
-                while (true)
-
-                {
-                    while (P.Count() < 4)
-                    {
-                        AddTrackedProduct();
-                    }
-                    DecayProductLife();
-                    Sell();
-                    Thread.Sleep(_updateIntervalInSeconds * 1000);
-                }
-
-            });
-            _t.Start();
+            _context = new EFDbContext();
+            LastSold = _context.PurchaseHistory.OrderByDescending(e => e.PurchaseID).Take(4).ToList();
+           
+            Init();
         }
 
-        private void DecayProductLife()
+        private void Init()
         {
-            foreach (var p in P)
+            foreach(var history in LastSold)
             {
-                p.LifeTime -= _rnd.Next(1, 20);
-                if(p.LifeTime <= 0)
+                var product = _context.Products.FirstOrDefaultAsync(e => e.ProductID == history.ProductId);
+
+                if(product.Result == null)
                 {
-                    P.Remove(p); // should I do a custom remove or can C# handle it?
+                    AddTrackedProduct(_context.Products.ElementAt(_rnd.Next(0, 700)));
+                    return;
                 }
+                AddTrackedProduct(product.Result);
+                
             }
         }
 
-        private void Sell()
+        public void AddTrackedProduct(Product product)
         {
-            var r = _rnd.Next(1, 100);
-            if(r < 14)
+            P.Add(new TrackedProduct
             {
-                // replace oldest product
-                ReplaceOldest();
-            }
-            else
-            {
-                // update a product already tracked
-                for(var i = 0; i < _rnd.Next(0, P.Count()); i++)
-                {
-                    P.ElementAt(_rnd.Next(0, 4)).SellCount += _rnd.Next(1, 4);
-                }
-            }
-        }
-
-        private void ReplaceOldest()
-        {
-            P.RemoveAt(P.IndexOfMin());
-            AddTrackedProduct();
-        }
-
-        private void AddTrackedProduct()
-        {
-            var p = new TrackedProduct
-            {
-                SellCount = _rnd.Next(10, 200),
-                LifeTime = 100000,
-                Product = Products.ElementAt(_rnd.Next(0, Products.Count())),
+                Remaining = product.Quantity,
+                Product = product,
                 ID = _rnd.Next()
-            };
+            });
+        }
 
-            if (P.Contains(p)) AddTrackedProduct();
+        public static void ReplaceTrackedProduct(Product product)
+        {
+            // remove oldest 
+            // could also do it by PurchaseDate, but this should work just fine
+            var removedIndex = FindAndRemoveMin();
+            P.Insert(removedIndex, new TrackedProduct
+            {
+                Remaining = product.Quantity,
+                Product = product,
+                ID = product.ProductID + 1 // :D
+            });
+        }
 
-            P.Add(p);
+        private static int FindAndRemoveMin()
+        {
+            var curMin = int.MaxValue;
+            foreach(var t in P)
+            {
+                if(t.Product.ProductID <= curMin)
+                {
+                    curMin = t.Product.ProductID;
+                }
+            }
+
+            for(var i = 0; i < P.Count; i++)
+            {
+                if(P.ElementAt(i).Product.ProductID == curMin)
+                {
+                    P.RemoveAt(i);
+                    return i;
+                }
+            }
+            return 0;
         }
     }    
 
     public class TrackedProduct
     {
         public Product Product { get; set; }
-        public int SellCount { get; set; }
-        public int LifeTime { get; set; }
+        public int Remaining { get; set; }
         public int ID { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            var item = obj as TrackedProduct;
-
-            if (item == null)
-            {
-                return false;
-            }
-
-            return ID == item.ID;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.GetHashCode();
-        }
-    }
-
-    public static class Extension_
-    {
-        public static int IndexOfMin(this IList<TrackedProduct> self)
-        {
-            if (self == null)
-            {
-                throw new ArgumentNullException("self");
-            }
-
-            if (self.Count == 0)
-            {
-                throw new ArgumentException("List is empty.", "self");
-            }
-
-            var min = self[0];
-            int minIndex = 0;
-
-            for (int i = 1; i < self.Count; ++i)
-            {
-                if (self[i].LifeTime < min.LifeTime)
-                {
-                    min = self[i];
-                    minIndex = i;
-                }
-            }
-
-            return minIndex;
-        }
     }
 }

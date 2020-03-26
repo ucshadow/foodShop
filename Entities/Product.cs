@@ -37,5 +37,10 @@ namespace FoodStore.Entities
 
         public decimal Rating { get; set; }
         public int NumberOfVotes { get; set; }
+
+        // hell yah discounts, love em :D
+        [Required]
+        [Range(0, 100, ErrorMessage = "Please enter a discount between 0 and 100")]
+        public decimal Discount { get; set; }
     }
 }

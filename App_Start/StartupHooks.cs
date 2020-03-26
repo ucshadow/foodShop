@@ -12,7 +12,8 @@ namespace FoodStore
     {
         public static void AddCustomHooks()
         {
-            
+            new RealTimeSellData();
+            GlobalCache.SetUp();
         }
     }
 }

@@ -37,7 +37,8 @@ namespace FoodStore.Concrete
                         Size = i.Size,
                         Unit = i.Unit,
                         Rating = i.Rating,
-                        NumberOfVotes = i.NumberOfVotes
+                        NumberOfVotes = i.NumberOfVotes,
+                        Discount = i.Discount
                     };
                     Clone.Add(p);
                 }
@@ -66,6 +67,7 @@ namespace FoodStore.Concrete
                     dbEntry.Picture = product.Picture;
                     dbEntry.Rating = product.Rating;
                     dbEntry.NumberOfVotes = product.NumberOfVotes;
+                    dbEntry.Discount = product.Discount;
                 }
             }
             // this may throw validation errors and fail silently so Ill leave it like this :D

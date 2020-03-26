@@ -35,7 +35,7 @@ namespace FoodStore.Models
 
         public Nutrition(string productName)
         {
-            if (_clone == null) _clone = RealTimeSellData.Products;
+            if (_clone == null) _clone = GlobalCache.ProductCache;
             Product = _clone?.FirstOrDefault(e => e.Name == productName);
             NutritionInfo = new Dictionary<string, string[]>();
             FoodList = new List<string>();

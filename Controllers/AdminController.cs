@@ -1,5 +1,6 @@
 ﻿using FoodStore.Abstract;
 using FoodStore.Entities;
+using FoodStore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,7 @@ namespace FoodStore.Controllers
         }
         public ViewResult Index()
         {
-            return View(_repository.Products);
+            return View();
         }
 
         public ViewResult Edit(int productId)
@@ -36,7 +37,8 @@ namespace FoodStore.Controllers
             {
                 _repository.SaveProduct(product);
                 TempData["message"] = string.Format("{0} has been saved", product.Name);
-                return RedirectToAction("Index");
+                ViewBag.Message = $"Edit {product.Name} success";
+                return View(product);
             }
             else
             {
@@ -61,6 +63,33 @@ namespace FoodStore.Controllers
                 deletedProduct.Name);
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult DiscountCategory(string category, decimal discount)
+        {
+            if (discount > 100 || discount < 0)
+            {
+                return RedirectToAction("List", "Product", new { category, message = $"discount must be between 0 and 100 -> {discount}" });
+            }
+
+            var productsFormCat = _repository.Products.Where(e => e.Category == category).ToList();
+            if(productsFormCat == null || productsFormCat.Count() == 0)
+            {
+                return RedirectToAction("List", "Product", new { category, message = $"No products with category {category}" });
+            }
+
+            
+
+            foreach(var p in productsFormCat)
+            {
+                p.Discount = discount;
+                p.Price = Helpers.CalculateDiscount(p.Price, p.Discount);
+                _repository.SaveProduct(p);
+            }
+
+            return RedirectToAction("List", "Product", new { category, message = $"Succes applying {discount} discount to {category} category" });
+         
         }
     }
 }

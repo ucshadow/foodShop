@@ -194,6 +194,7 @@
     <Compile Include="Concrete\OrderProcessor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Admin\AdminProductController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -213,6 +214,8 @@
     <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
     <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
+    <Compile Include="Infrastructure\Helpers.cs" />
+    <Compile Include="Infrastructure\LocalAPI\GlobalCache.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.Designer.cs">
       <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
@@ -240,6 +243,10 @@
     <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.cs" />
     <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.Designer.cs">
       <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003260748115_AddedDiscountsToProduct.cs" />
+    <Compile Include="Migrations\202003260748115_AddedDiscountsToProduct.Designer.cs">
+      <DependentUpon>202003260748115_AddedDiscountsToProduct.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CommentUserModel.cs" />
@@ -385,6 +392,7 @@
     <Content Include="img\r7.jpg" />
     <Content Include="img\r8.jpg" />
     <Content Include="img\r9.jpg" />
+    <Content Include="Scripts\admin\adminBundle.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\free\vendors\fontawesome\webfonts\fa-brands-400.eot" />
@@ -872,6 +880,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AdminProduct\" />
     <Folder Include="Views\NutritionAPI\" />
   </ItemGroup>
   <ItemGroup>
@@ -905,6 +914,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003250702076_somethingChangedWithUserProfile.resx">
       <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003260748115_AddedDiscountsToProduct.resx">
+      <DependentUpon>202003260748115_AddedDiscountsToProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

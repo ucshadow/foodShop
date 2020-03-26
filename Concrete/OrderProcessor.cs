@@ -1,6 +1,7 @@
 ﻿using FoodStore.Entities;
 using FoodStore.Abstract;
 using System;
+using FoodStore.Infrastructure;
 
 namespace FoodStore.Concrete
 {
@@ -23,7 +24,7 @@ namespace FoodStore.Concrete
                     ProductName = e.Product.Name,
                     ProductCount = e.Quantity,
                     UserId = userId,
-                    Price = e.Product.Price,
+                    Price = e.Product.Discount > 0 ? Helpers.CalculateDiscount(e.Product.Price, e.Product.Discount) : e.Product.Price,
                     ProductId = e.Product.ProductID
                 };
                 _pRepository.SavePurchase(ph);

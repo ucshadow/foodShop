@@ -31,17 +31,14 @@ namespace FoodStore.Controllers
             _purchaseHistoryRepository = pRepository;
             _commentsRepository = commentsRepository;
             _ppRepository = ppRepository;
-            if(RealTimeSellData.Products == null)
-            {
-                RealTimeSellData.Products = productRepository.GetClone();
-                new RealTimeSellData().Loop();
-            }
         }
 
-        public ViewResult List(string category, int page = 1, string q = "")
+        public ViewResult List(string category, int page = 1, string q = "", string message = "")
         {
+            Debug.WriteLine(category);
             IEnumerable<Product> products = null;
             var searchReultsCount = 0;
+            ViewBag.Message = message;
 
             if(q == null || q.Trim().Length == 0)
             {
@@ -49,7 +46,7 @@ namespace FoodStore.Controllers
                 .Where(p => category == null || p.Category == category)
                 .OrderBy(p => category == null ? Rnd.Next() : p.ProductID)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize);
+                .Take(PageSize).ToList();
             }
             else
             {   // search
@@ -65,12 +62,10 @@ namespace FoodStore.Controllers
                 searchReultsCount = tempProducts.Count();
 
                 products = tempProducts.Skip((page - 1) * PageSize)
-                .Take(PageSize);
+                .Take(PageSize).ToList();
 
 
             }
-
-            Debug.WriteLine("Product count: " + searchReultsCount);
 
             ProductsListViewModel model = new ProductsListViewModel
             {
@@ -84,14 +79,14 @@ namespace FoodStore.Controllers
                 CurrentCategory = category,
                 SearchQuery = q
             };
-            return View(model);
+            return View("~/Views/Product/List.cshtml", model);
         }
 
         [HttpPost]
         public ActionResult GetSearchData(FoodName foodName)
         {
             var parsed = ParseNameForSearch(foodName.Name.ToLower());           
-            var res = RealTimeSellData.Products
+            var res = GlobalCache.ProductCache
                 .Where(p => p.Name.ToLower().Contains(parsed));
 
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -149,7 +144,7 @@ namespace FoodStore.Controllers
 
         [Route("/Details/{product?}")]
         public ViewResult Details(string productName)
-        {   
+        {
             // heavy db calls ahead, maybe it could be simplified using relations?
             var p = Repository.Products.FirstOrDefault(e => e.Name == productName);
             var productDisplayed = new ProductModel 

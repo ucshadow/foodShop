@@ -25,9 +25,9 @@
         <tr>
             <td class="text-center">@line.Quantity</td>
             <td class="text-left">@line.Product.Name</td>
-            <td class="text-right">@line.Product.Price.ToString("c")</td>
+            <td class="text-right">@(Model.CalculateProductPriceWithDiscount(line.Product).ToString("c"))</td>
             <td class="text-right">
-                @((line.Quantity * line.Product.Price).ToString("c"))
+                @((line.Quantity * Model.CalculateProductPriceWithDiscount(line.Product)).ToString("c"))
             </td>
 
             <td>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodStore.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,7 +35,9 @@ namespace FoodStore.Entities
         }
         public decimal ComputeTotalValue()
         {
-            return CartEntries.Sum(e => e.Product.Price * e.Quantity);
+            return CartEntries.Sum(e => (e.Product.Discount > 0 ? 
+            Helpers.CalculateDiscount(e.Product.Price, e.Product.Discount) :
+            e.Product.Price) * e.Quantity);
         }
         public void Clear()
         {

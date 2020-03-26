@@ -1,6 +1,8 @@
 ﻿@model FoodStore.Entities.Product
-@using FoodStore.Entities
 
+@using FoodStore.Infrastructure
+
+<!-- Maybe switch to ProductModel? -->
 <div class="col-md-6 col-lg-4 col-xl-3">
     <div class="card text-center card-product">
         <div class="card-product__img">
@@ -14,12 +16,19 @@
 
         </div>
         <div class="card-body">
+
             <p>@Model.Category</p>
 
+            @if (Model.Discount > 0)
+            {
+                <p class="card-product__price" style="text-decoration: line-through;">@Model.Price</p>
+                <p class="card-product__price" style="color:darkred">@(Helpers.CalculateDiscount(@Model.Price, Model.Discount))</p>
+            }
+            else
+            {
+                <p class="card-product__price">@Model.Price</p>
+            }
 
-
-
-            <p class="card-product__price">@Model.Price</p>
             @using (Html.BeginForm("AddToCart", "Cart"))
             {
                 @Html.HiddenFor(x => x.ProductID)
@@ -28,7 +37,17 @@
             }
 
             <div class="btn-danger" style="cursor:pointer">
-            <a href="@Url.Action("Nutrition", "Nutrition", new {productName = @Model.Name})">Nutrition data</a></div>
+                <a href="@Url.Action("Nutrition", "Nutrition", new {productName = @Model.Name})">Nutrition data</a>
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a href=@("/Admin/Edit?ProductID=" + Model.ProductID)>
+                    <div style="position:absolute; right:0; bottom:0;" onclick="toggelProductForm(event, @Model.ProductID)">
+                    edit
+                </div>
+                </a>
+            }
         </div>
     </div>
 </div>
