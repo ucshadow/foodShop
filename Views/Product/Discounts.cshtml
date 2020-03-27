@@ -1,0 +1,12 @@
+﻿@using FoodStore.Infrastructure.Discounts
+
+
+    <h1>Discounts of the day</h1>
+<div style="display:flex; overflow: auto" class="container-fluid row">
+    
+    @foreach(var p in DiscountProvider.DiscountsManager.GetDiscounts())
+    {
+        @Html.Partial("ProductSummary", p)
+
+    }
+</div>

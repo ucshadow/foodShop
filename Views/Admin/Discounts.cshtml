@@ -1,0 +1,123 @@
+﻿@model FoodStore.Models.AdminDiscountsModel
+@{
+    ViewBag.Title = "Discounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Linq
+@using FoodStore.Infrastructure.Discounts
+
+<h1>Auto discounter settings</h1>
+
+<div class="container-fluid row" style="border: 1px solid gray">
+
+    <div class="col-sm-3">
+        Max discount: @DiscountProvider.DiscountsManager.GetMaxDiscountPercentage() %
+    </div>
+
+    <div class="col-sm-3">
+        Max products discounted: @DiscountProvider.DiscountsManager.GetMaxProductsDiscounted()
+    </div>
+
+    <div class="col-sm-3">
+        Cheap Bias: @DiscountProvider.DiscountsManager.GetCheapBias()
+    </div>
+
+    <div class="col-sm-3">
+        Update time in seconds: @DiscountProvider.DiscountsManager.GetUpdateTimeInSeconds()
+    </div>
+    <br />
+
+</div>
+
+<br />
+<br />
+<div class="container-fluid row" style="border:1px solid gray">
+    @using (Html.BeginForm("SetMaxDiscountPercentage", "Admin", FormMethod.Post, new { @class = "col-sm-3" }))
+    {
+        <input name="n" type="text" placeholder="max discount %" />
+        <input type="submit" class="btn btn-danger" value="Change" />
+    }
+
+    @using (Html.BeginForm("SetMaxProductsDiscounted", "Admin", FormMethod.Post, new { @class = "col-sm-3" }))
+    {
+        <input name="n" type="text" placeholder="max products discounted" />
+        <input type="submit" class="btn btn-danger" value="Change" />
+    }
+
+    @using (Html.BeginForm("SetCheapBias", "Admin", FormMethod.Post, new { @class = "col-sm-3" }))
+    {
+        <input name="n" type="text" placeholder="cheap bias" />
+        <input type="submit" class="btn btn-danger" value="Change" />
+    }
+
+    @using (Html.BeginForm("SetUpdateTimeInSeconds", "Admin", FormMethod.Post, new { @class = "col-sm-3" }))
+    {
+        <input name="n" type="text" placeholder="update time in seconds" />
+        <input type="submit" class="btn btn-danger" value="Change" />
+    }
+
+
+</div>
+<br />
+@using (Html.BeginForm("TriggerManualUpdate", "Admin", FormMethod.Post, new { @class = "col-sm-3" }))
+{
+    <input type="submit" class="btn btn-danger" value="Trigger Update" />
+}
+<br />
+
+<h2>Discounted items: @Model.GetAllDiscountedItems().Count()</h2>
+<div style="display: flex;justify-content: space-around; max-width: 90%; flex-wrap: wrap; align-content: space-around;">
+    @{
+        var items = @Model.GetAllDiscountedItems();
+        items.Sort((a, b) => a.Name.CompareTo(b.Name));
+    }
+    @foreach (var p in items)
+    {
+
+
+        <div style="height: 200px; width: 140px; position: relative; border: 1px solid gray; margin: 10px;">
+            <a href="@Url.Action("Details", "Product", new {productName = @p.Name})"> @p.Name </a>
+            <img src="@p.Picture" style="width:140px" />
+
+            @using (Html.BeginForm("RemoveItemFromDiscount", "Admin", new { productID = p.ProductID }))
+            {
+                <input style="background:red;" type="submit" value="x" />
+            }
+            <div>@p.Discount %</div>
+
+
+        </div>
+    }
+</div>
+
+<br />
+
+<h2>Discounted by daily auto discounter: @DiscountProvider.DiscountsManager.GetDiscounts().Count()</h2>
+<div style="display: flex;justify-content: space-around; max-width: 90%; flex-wrap: wrap; align-content: space-around;">
+    @{
+        var items2 = @DiscountProvider.DiscountsManager.GetDiscounts();
+        items.Sort((a, b) => a.Name.CompareTo(b.Name));
+    }
+    @foreach (var p in items2)
+    {
+
+
+        <div style="height: 200px; width: 140px; position: relative; border: 1px solid gray; margin: 10px;">
+            <a href="@Url.Action("Details", "Product", new {productName = @p.Name})"> @p.Name </a>
+            <img src="@p.Picture" style="width:140px" />
+
+            @using (Html.BeginForm("RemoveItemFromDiscount", "Admin", new { productID = p.ProductID }))
+            {
+                <input style="background:red;" type="submit" value="x" />
+            }
+            <div>@p.Discount %</div>
+
+
+        </div>
+    }
+</div>
+
+<br />
+
+

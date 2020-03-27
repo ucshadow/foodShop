@@ -1,0 +1,35 @@
+﻿@model FoodStore.Models.AdminCacheModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using FoodStore.Models
+
+<h1>@ViewBag.Message</h1>
+
+<h3> Max number of items per cache: @Model.Cache.GetMaxNumberOfItemsPerCache()</h3>
+
+<div>
+    Product models cached: @Model.Cache.CacheCount("ProductModel")
+    @if (Model.Cache.CacheCount("ProductModel") > 0)
+    {
+        using (Html.BeginForm("ClearCache", "Admin", new { type = "ProductModel" })) 
+        {
+            <input type="submit" value="Clear Product Model Cache" />
+        }
+
+        foreach (var pm in Model.Cache.GetCachedItems<ProductModel>())
+        {
+            <div>
+                <div>
+                    @pm.Product.Name
+                </div>
+                <img src="@pm.Product.Picture" />
+            </div>
+            <br />
+            <br />
+        }
+    }
+</div>

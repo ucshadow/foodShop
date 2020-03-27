@@ -9,6 +9,7 @@ namespace FoodStore.Entities
         public int ProductID { get; set; }
 
         [Required(ErrorMessage = "Please enter a product name")]
+        // todo: this should be unique, add custom validation like in PublicProfile!
         public string Name { get; set; }
 
         [DataType(DataType.MultilineText)]

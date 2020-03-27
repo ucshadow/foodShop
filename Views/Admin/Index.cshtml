@@ -1,8 +1,20 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<h1>
+    Hi @User.Identity.Name
+</h1>
+
 <div>
-    Admin
+    <a href="/Admin/Cache">Cache</a>
+    <br />
+    <br />
+
+    <a href="/Admin/Discounts">Discounts</a>
+    <br />
+    <br />
 </div>

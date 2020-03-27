@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FoodStore.HtmlHelpers;
+using FoodStore.Infrastructure.Cache;
+using FoodStore.Models;
 
 namespace FoodStore.Controllers
 {
@@ -47,6 +49,9 @@ namespace FoodStore.Controllers
                 ProductID = productID,
                 PurchaseID = _pRepository.PurchaseHistory.FirstOrDefault(e => e.ProductId == productID).PurchaseID
             };
+
+            // need to remove the cahed model from the cache so the comment is stored in the ProductModel cache
+            GlobalCache.GetCache().ClearCachedItem<ProductModel>(productID);
             _cRepository.SaveComment(c);
             return Redirect(Request.UrlReferrer.ToString());
         }

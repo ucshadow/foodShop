@@ -214,8 +214,13 @@
     <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
     <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
+    <Compile Include="Infrastructure\Discounts\DiscountProvider.cs" />
+    <Compile Include="Infrastructure\Discounts\DiscountsOfTheDayAutoHandler.cs" />
+    <Compile Include="Infrastructure\Cache\GlobalCache.cs" />
+    <Compile Include="Infrastructure\Cache\ICacheable.cs" />
+    <Compile Include="Infrastructure\Discounts\IDiscountsManager.cs" />
     <Compile Include="Infrastructure\Helpers.cs" />
-    <Compile Include="Infrastructure\LocalAPI\GlobalCache.cs" />
+    <Compile Include="Infrastructure\LocalAPI\GlobalProductCache.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.cs" />
     <Compile Include="Migrations\202003210946255_AddedComments.Designer.cs">
       <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
@@ -249,6 +254,8 @@
       <DependentUpon>202003260748115_AddedDiscountsToProduct.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AdminCacheModel.cs" />
+    <Compile Include="Models\AdminDiscountsModel.cs" />
     <Compile Include="Models\CommentUserModel.cs" />
     <Compile Include="Models\Nutrition.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -852,7 +859,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Cart\Checkout.cshtml" />
     <Content Include="Views\Cart\Completed.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
@@ -877,6 +883,10 @@
     <Content Include="Views\PublicProfile\Index.cshtml" />
     <Content Include="Views\PublicProfile\PublicProfile.cshtml" />
     <Content Include="Views\Shared\Error404.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Cache.cshtml" />
+    <Content Include="Views\Product\Discounts.cshtml" />
+    <Content Include="Views\Admin\Discounts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

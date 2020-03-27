@@ -1,4 +1,5 @@
 ﻿using FoodStore.HtmlHelpers;
+using FoodStore.Infrastructure.Discounts;
 using FoodStore.Infrastructure.LocalAPI;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace FoodStore
         public static void AddCustomHooks()
         {
             new RealTimeSellData();
-            GlobalCache.SetUp();
+            GlobalProductCache.SetUp();
+            DiscountProvider.DiscountsManager = new DiscountsOfTheDayAutoHandler();
         }
     }
 }

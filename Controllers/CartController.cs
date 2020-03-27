@@ -9,6 +9,7 @@ using FoodStore.Infrastructure.LocalAPI;
 using System.Diagnostics;
 using FoodStore.Abstract;
 using Microsoft.AspNet.Identity;
+using FoodStore.Infrastructure.Cache;
 
 namespace FoodStore.Controllers
 {
@@ -79,6 +80,9 @@ namespace FoodStore.Controllers
 
                 // update real time sell tracker
                 cart.CartEntries.ForEach(e => RealTimeSellData.ReplaceTrackedProduct(e.Product));
+
+                // remove ProductModel from global cache
+                cart.CartEntries.ForEach(e => GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.Product.ProductID));
 
 
                 cart.Clear();

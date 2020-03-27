@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using FoodStore.HtmlHelpers;
+using FoodStore.Infrastructure.Cache;
 
 namespace FoodStore.Controllers
 {
@@ -86,7 +87,7 @@ namespace FoodStore.Controllers
         public ActionResult GetSearchData(FoodName foodName)
         {
             var parsed = ParseNameForSearch(foodName.Name.ToLower());           
-            var res = GlobalCache.ProductCache
+            var res = GlobalProductCache.ProductCache
                 .Where(p => p.Name.ToLower().Contains(parsed));
 
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -146,32 +147,39 @@ namespace FoodStore.Controllers
         public ViewResult Details(string productName)
         {
             // heavy db calls ahead, maybe it could be simplified using relations?
-            var p = Repository.Products.FirstOrDefault(e => e.Name == productName);
-            var productDisplayed = new ProductModel 
-            {
-                Product = p,
-                Related = Repository.Products.Where(e => e.Category == p.Category).Take(4).ToList(),
-                IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
 
-                OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
-            };
+            // or cache :)
 
-            var allCommentsForThisProduct = _commentsRepository.GetProductComments(p.ProductID);
-            foreach(var comment in allCommentsForThisProduct)
+            if (!(GlobalCache.GetCache().GetCachedItem<ProductModel>(productName) is ProductModel cached))
             {
-                var purchase = _purchaseHistoryRepository.PurchaseHistory.FirstOrDefault(e => e.UserId == comment.AspNetUserId && e.ProductId == p.ProductID);
-                productDisplayed.Comments.Add(new CommentUserModel
+                var p = Repository.Products.FirstOrDefault(e => e.Name == productName);
+                var productDisplayed = new ProductModel
                 {
-                    Comment = comment,
-                    User = _ppRepository.GetCommentPublicProfile(comment.AspNetUserId),
-                    Rating = purchase?.Rating,
-                    PurchasedOn = purchase?.PurchaseDate
-                });
-            }
+                    Product = p,
+                    Related = Repository.Products.Where(e => e.Category == p.Category).OrderBy(e => Rnd.Next()).Take(4).ToList(),
+                    IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
+
+                    OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
+                };
+                var allCommentsForThisProduct = _commentsRepository.GetProductComments(p.ProductID);
+                foreach (var comment in allCommentsForThisProduct)
+                {
+                    var purchase = _purchaseHistoryRepository.PurchaseHistory.FirstOrDefault(e => e.UserId == comment.AspNetUserId && e.ProductId == p.ProductID);
+                    productDisplayed.Comments.Add(new CommentUserModel
+                    {
+                        Comment = comment,
+                        User = _ppRepository.GetCommentPublicProfile(comment.AspNetUserId),
+                        Rating = purchase?.Rating,
+                        PurchasedOn = purchase?.PurchaseDate
+                    });
+                }
                 
-
-
-            return View(productDisplayed);
+                // should update the right to comment in the cahced entry at checkout, but in theory is the same.
+                GlobalCache.GetCache().CacheItem<ProductModel>(productDisplayed);
+                return View(productDisplayed);
+            }
+            cached.IsCommentAllowedForCurrentUser = IsAllowedToComment(cached.Product);
+            return View(cached);
         }
 
         private bool IsAllowedToComment(Product p)

@@ -1,9 +1,10 @@
 ﻿@model FoodStore.Entities.Product
 
 @using FoodStore.Infrastructure
+@using FoodStore.Infrastructure.Discounts
 
 <!-- Maybe switch to ProductModel? -->
-<div class="col-md-6 col-lg-4 col-xl-3">
+<div class="">
     <div class="card text-center card-product">
         <div class="card-product__img">
 
@@ -44,9 +45,20 @@
             {
                 <a href=@("/Admin/Edit?ProductID=" + Model.ProductID)>
                     <div style="position:absolute; right:0; bottom:0;" onclick="toggelProductForm(event, @Model.ProductID)">
-                    edit
-                </div>
+                        edit
+                    </div>
                 </a>
+
+                if (!DiscountProvider.DiscountsManager.ProductExists(@Model.ProductID))
+                {
+                    using (Html.BeginForm("AddToDailyDiscount", "Admin", FormMethod.Post, new { @style = "position:absolute; bottom:0px;left:0px" }))
+                    {
+                        @Html.Hidden("productID", @Model.ProductID)
+                        <input type="submit" value="D" class="btn btn-info" />
+                    }
+                }
+
+
             }
         </div>
     </div>

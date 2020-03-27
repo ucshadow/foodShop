@@ -8,7 +8,7 @@
 
 @if (User.IsInRole("Admin"))
 {
-    if(ViewBag.Message != null)
+    if (ViewBag.Message != null)
     {
         <h1>@ViewBag.Message</h1>
     }
@@ -16,47 +16,54 @@
     {
         using (Html.BeginForm("DiscountCategory", "Admin", FormMethod.Post, new { @style = "margin-left: 25%" }))
         {
-            <input name="category", value="@Model.CurrentCategory" hidden/>
+            <input name="category" , value="@Model.CurrentCategory" hidden />
 
             <label for="discount">Discount</label>
             <input type="text" name="discount" />
 
-            <input type="submit" class="btn btn-danger" value="Apply Discount"/>
+            <input type="submit" class="btn btn-danger" value="Apply Discount" />
         }
     }
 }
 
-    @Html.Partial("~/Views/Product/SellingNow.cshtml")
-    <section class="section-margin calc-60px">
-        <div class="container">
-            <div class="section-intro pb-60px">
-                <p>@(Model.CurrentCategory ?? "All Categories")</p>
-                @if (Model.SearchQuery != null)
+<div class="container-fluid row">
+    <div class="col-sm-3">
+        @Html.Partial("~/Views/Product/SellingNow.cshtml")
+    </div>
+    <div class="col-sm-8 offset-1">
+        @Html.Partial("~/Views/Product/Discounts.cshtml")
+    </div>
+</div>
+<section class="section-margin calc-60px">
+    <div class="container">
+        <div class="section-intro pb-60px">
+            <p>@(Model.CurrentCategory ?? "All Categories")</p>
+            @if (Model.SearchQuery != null)
+            {
+                <p>Search Query: @Model.SearchQuery</p>
+            }
+            <h3>@(Model.CurrentCategory != null ? "" : "Random products")</h3>
+            @*<div class="product_container">*@
+            <div class="row">
+                @foreach (var p in Model.Products)
                 {
-                    <p>Search Query: @Model.SearchQuery</p>
-                }
-                <h3>@(Model.CurrentCategory != null ? "" : "Random products")</h3>
-                @*<div class="product_container">*@
-                <div class="row">
-                    @foreach (var p in Model.Products)
-                    {
-                        @Html.Partial("ProductSummary", p)
+                    @Html.Partial("ProductSummary", p)
 
-                    }
-                </div>
+                }
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    @if (@Model.PagingInfo != null)
-    {
-        <div class="btn-group" style="display:block;width:100%;">
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("List",
-                new
-                     {
-                         page = x,
-                         q = Model.SearchQuery,
-                    category = Model.CurrentCategory ?? "Search Results"
-                     }))
-        </div>
-    }
+@if (@Model.PagingInfo != null)
+{
+    <div class="btn-group" style="display:block;width:100%;">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List",
+            new
+                 {
+                     page = x,
+                     q = Model.SearchQuery,
+                category = Model.CurrentCategory ?? "Search Results"
+                 }))
+    </div>
+}

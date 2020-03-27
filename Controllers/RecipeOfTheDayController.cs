@@ -44,7 +44,7 @@ namespace FoodStore.Controllers
         private string GetQueryName()
         {
             var safe = new string[] { "chicken", "potatoes", "tomatoes", "crab", "strawberries", "cocoa", "coffee", "tuna", "milk" };
-            var repo = GlobalCache.ProductCache;
+            var repo = GlobalProductCache.ProductCache;
             if (repo == null) return safe[_rnd.Next(0, safe.Length)];
             for (var i = 0; i < 100; i++)
             {
