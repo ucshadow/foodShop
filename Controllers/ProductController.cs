@@ -22,16 +22,18 @@ namespace FoodStore.Controllers
         private readonly IPurchaseHistoryRepository _purchaseHistoryRepository;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IPublicProfilesRepository _ppRepository;
+        private readonly IAffiliateRepository _aRepository;
         public int PageSize = 8;
         public readonly Random Rnd = new Random();
 
         public ProductController(IProductRepository productRepository, IPublicProfilesRepository ppRepository,
-            IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository)
+            IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository, IAffiliateRepository affiliateRepository)
         {
             Repository = productRepository;
             _purchaseHistoryRepository = pRepository;
             _commentsRepository = commentsRepository;
             _ppRepository = ppRepository;
+            _aRepository = affiliateRepository;
         }
 
         public ViewResult List(string category, int page = 1, string q = "", string message = "")
@@ -158,8 +160,8 @@ namespace FoodStore.Controllers
                     Product = p,
                     Related = Repository.Products.Where(e => e.Category == p.Category).OrderBy(e => Rnd.Next()).Take(4).ToList(),
                     IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
-
                     OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
+                    IsUsserAffiliated = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId()) != null
                 };
                 var allCommentsForThisProduct = _commentsRepository.GetProductComments(p.ProductID);
                 foreach (var comment in allCommentsForThisProduct)

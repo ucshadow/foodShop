@@ -2,16 +2,21 @@
 using FoodStore.Abstract;
 using System;
 using FoodStore.Infrastructure;
+using FoodStore.Infrastructure.LocalAPI;
+using FoodStore.Infrastructure.Cache;
+using FoodStore.Models;
 
 namespace FoodStore.Concrete
 {
     public class OrderProcessor : IOrderProcessor
     {
-        private readonly IPurchaseHistoryRepository _pRepository;
+        private readonly IPurchaseHistoryRepository _prRepository;
+        private readonly IProductRepository _pRepository;
 
-        public OrderProcessor(IPurchaseHistoryRepository repository)
+        public OrderProcessor(IPurchaseHistoryRepository repository, IProductRepository productRepository)
         {
-            _pRepository = repository;
+            _prRepository = repository;
+            _pRepository = productRepository;
         }
 
         public void ProcessOrder(Cart cart, ShippingDetails shippingDetails, string userId)
@@ -27,8 +32,33 @@ namespace FoodStore.Concrete
                     Price = e.Product.Discount > 0 ? Helpers.CalculateDiscount(e.Product.Price, e.Product.Discount) : e.Product.Price,
                     ProductId = e.Product.ProductID
                 };
-                _pRepository.SavePurchase(ph);
+                e.Product.Quantity -= 1;
+                _pRepository.SaveProduct(e.Product);
+                GlobalProductCache.UpdateProduct(e.Product);
+                RealTimeSellData.ReplaceOrUpdateTrackedProduct(e.Product);
+                GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.Product.ProductID);
+                _prRepository.SavePurchase(ph);
             });
+        }
+
+        public void ProcessAffiliateOrder(Product e, ShippingDetails shippingDetails, string affiliateId)
+        {
+            var ph = new Purchase
+            {
+                PurchaseDate = DateTime.Now.ToString(),
+                ShippingDetails = shippingDetails,
+                ProductName = e.Name,
+                ProductCount = 1,
+                UserId = affiliateId,
+                Price = e.Discount > 0 ? Helpers.CalculateDiscount(e.Price, e.Discount) : e.Price,
+                ProductId = e.ProductID
+            };
+            e.Quantity -= 1;
+            _pRepository.SaveProduct(e);
+            GlobalProductCache.UpdateProduct(e);
+            RealTimeSellData.ReplaceOrUpdateTrackedProduct(e);
+            GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.ProductID);
+            _prRepository.SavePurchase(ph);
         }
     }
 }

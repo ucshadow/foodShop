@@ -3,6 +3,7 @@ using FoodStore.Entities;
 using FoodStore.Infrastructure;
 using FoodStore.Infrastructure.Cache;
 using FoodStore.Infrastructure.Discounts;
+using FoodStore.Infrastructure.LocalAPI;
 using FoodStore.Models;
 using System;
 using System.Collections.Generic;
@@ -49,13 +50,18 @@ namespace FoodStore.Controllers
         [HttpPost]
         public ActionResult Edit(Product product)
         {
-            // todo also update cache :)
             if (ModelState.IsValid)
             {
                 _pRepository.SaveProduct(product);
                 CheckIfDiscountChanged(product);
                 TempData["message"] = string.Format("{0} has been saved", product.Name);
                 ViewBag.Message = $"Edit {product.Name} success";
+
+                // clear the cached ProductModel so the edit gets propagated
+                GlobalCache.GetCache().ClearCachedItem<ProductModel>(product.ProductID);
+
+                // also update the global product cache
+                GlobalProductCache.UpdateProduct(product);
                 return View(product);
             }
             else

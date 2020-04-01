@@ -78,13 +78,6 @@ namespace FoodStore.Controllers
                 var userId = User.Identity.GetUserId();
                 _orderProcessor.ProcessOrder(cart, shippingDetails, userId);
 
-                // update real time sell tracker
-                cart.CartEntries.ForEach(e => RealTimeSellData.ReplaceTrackedProduct(e.Product));
-
-                // remove ProductModel from global cache
-                cart.CartEntries.ForEach(e => GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.Product.ProductID));
-
-
                 cart.Clear();
                 return View("Completed");
             }

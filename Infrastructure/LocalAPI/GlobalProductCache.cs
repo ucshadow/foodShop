@@ -19,5 +19,17 @@ namespace FoodStore.Infrastructure.LocalAPI
             var products = DependencyResolver.Current.GetService<IProductRepository>();
             ProductCache = products.GetClone();
         }
+
+        public static void UpdateProduct(Product p)
+        {
+            for(var i = 0; i < ProductCache.Count(); i++)
+            {
+                if(ProductCache[i].ProductID == p.ProductID)
+                {
+                    ProductCache[i] = p;
+                    return;
+                }
+            }
+        }
     }
 }

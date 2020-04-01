@@ -11,6 +11,7 @@ namespace FoodStore.Models
         public bool IsCommentAllowedForCurrentUser { get; set; }
         public List<Comment> OldUserComments { get; set; }
         public List<CommentUserModel> Comments { get; set; } = new List<CommentUserModel>();
+        public bool IsUsserAffiliated { get; set; }
 
         public ICacheable Cache()
         {

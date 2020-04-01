@@ -30,8 +30,8 @@
 
             p.parentElement.href = '/Product/Details?productName=' + data[i].Product.Name;
 
-            //let t = document.getElementById('i_t' + i)
-            //t.innerText = data[i].Remaining + ' remainig';
+            let t = document.getElementById('i_t' + i)
+            t.innerText = data[i].Remaining + ' remainig';
 
         }
     }

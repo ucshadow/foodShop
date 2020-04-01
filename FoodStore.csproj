@@ -58,12 +58,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -174,6 +186,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IAffiliateRepository.cs" />
     <Compile Include="Abstract\ICommentsRepository.cs" />
     <Compile Include="Abstract\IOrderProcessor.cs" />
     <Compile Include="Abstract\IProductRepository.cs" />
@@ -186,6 +199,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StartupHooks.cs" />
+    <Compile Include="Concrete\EFAffiliateRepository.cs" />
     <Compile Include="Concrete\EFCommentRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFProductRepository.cs" />
@@ -195,6 +209,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminProductController.cs" />
+    <Compile Include="Controllers\AffiliateController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -207,6 +222,8 @@
     <Compile Include="Controllers\PurchaseHistoryController.cs" />
     <Compile Include="Controllers\RealTimeSellDataController.cs" />
     <Compile Include="Controllers\RecipeOfTheDayController.cs" />
+    <Compile Include="Entities\Affiliate.cs" />
+    <Compile Include="Entities\AffiliateSell.cs" />
     <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\PublicProfile.cs" />
@@ -214,6 +231,7 @@
     <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
     <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
+    <Compile Include="Infrastructure\Cors.cs" />
     <Compile Include="Infrastructure\Discounts\DiscountProvider.cs" />
     <Compile Include="Infrastructure\Discounts\DiscountsOfTheDayAutoHandler.cs" />
     <Compile Include="Infrastructure\Cache\GlobalCache.cs" />
@@ -221,41 +239,26 @@
     <Compile Include="Infrastructure\Discounts\IDiscountsManager.cs" />
     <Compile Include="Infrastructure\Helpers.cs" />
     <Compile Include="Infrastructure\LocalAPI\GlobalProductCache.cs" />
-    <Compile Include="Migrations\202003210946255_AddedComments.cs" />
-    <Compile Include="Migrations\202003210946255_AddedComments.Designer.cs">
-      <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
+    <Compile Include="Migrations\202003311224548_AddedAffiliates.cs" />
+    <Compile Include="Migrations\202003311224548_AddedAffiliates.Designer.cs">
+      <DependentUpon>202003311224548_AddedAffiliates.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003240636116_ChangedFieldInHistoryToString.cs" />
-    <Compile Include="Migrations\202003240636116_ChangedFieldInHistoryToString.Designer.cs">
-      <DependentUpon>202003240636116_ChangedFieldInHistoryToString.cs</DependentUpon>
+    <Compile Include="Migrations\202004010740072_AddedShippingDetailsToAffiliateSell.cs" />
+    <Compile Include="Migrations\202004010740072_AddedShippingDetailsToAffiliateSell.Designer.cs">
+      <DependentUpon>202004010740072_AddedShippingDetailsToAffiliateSell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003241311381_AddedPublicProfiles.cs" />
-    <Compile Include="Migrations\202003241311381_AddedPublicProfiles.Designer.cs">
-      <DependentUpon>202003241311381_AddedPublicProfiles.cs</DependentUpon>
+    <Compile Include="Migrations\202004011228337_ChangedAffiliateSellToCollection.cs" />
+    <Compile Include="Migrations\202004011228337_ChangedAffiliateSellToCollection.Designer.cs">
+      <DependentUpon>202004011228337_ChangedAffiliateSellToCollection.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003241316088_AddedPublicProfiles2.cs" />
-    <Compile Include="Migrations\202003241316088_AddedPublicProfiles2.Designer.cs">
-      <DependentUpon>202003241316088_AddedPublicProfiles2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003241441115_ChangedPublicProfileToInt.cs" />
-    <Compile Include="Migrations\202003241441115_ChangedPublicProfileToInt.Designer.cs">
-      <DependentUpon>202003241441115_ChangedPublicProfileToInt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003241450141_ChangedThenameOfIdfield.cs" />
-    <Compile Include="Migrations\202003241450141_ChangedThenameOfIdfield.Designer.cs">
-      <DependentUpon>202003241450141_ChangedThenameOfIdfield.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.cs" />
-    <Compile Include="Migrations\202003250702076_somethingChangedWithUserProfile.Designer.cs">
-      <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003260748115_AddedDiscountsToProduct.cs" />
-    <Compile Include="Migrations\202003260748115_AddedDiscountsToProduct.Designer.cs">
-      <DependentUpon>202003260748115_AddedDiscountsToProduct.cs</DependentUpon>
+    <Compile Include="Migrations\202004011256044_AddedNameAndImageToAS.cs" />
+    <Compile Include="Migrations\202004011256044_AddedNameAndImageToAS.Designer.cs">
+      <DependentUpon>202004011256044_AddedNameAndImageToAS.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminCacheModel.cs" />
     <Compile Include="Models\AdminDiscountsModel.cs" />
+    <Compile Include="Models\AffiliateModel.cs" />
     <Compile Include="Models\CommentUserModel.cs" />
     <Compile Include="Models\Nutrition.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -400,6 +403,7 @@
     <Content Include="img\r8.jpg" />
     <Content Include="img\r9.jpg" />
     <Content Include="Scripts\admin\adminBundle.js" />
+    <Content Include="Scripts\affiliateExample.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\free\vendors\fontawesome\webfonts\fa-brands-400.eot" />
@@ -887,10 +891,14 @@
     <Content Include="Views\Admin\Cache.cshtml" />
     <Content Include="Views\Product\Discounts.cshtml" />
     <Content Include="Views\Admin\Discounts.cshtml" />
+    <Content Include="Views\Affiliate\Index.cshtml" />
+    <Content Include="Views\Affiliate\NotAffiliate.cshtml" />
+    <Content Include="Views\Affiliate\Example.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AdminProduct\" />
+    <Folder Include="Views\Error\" />
     <Folder Include="Views\NutritionAPI\" />
   </ItemGroup>
   <ItemGroup>
@@ -904,29 +912,17 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003210946255_AddedComments.resx">
-      <DependentUpon>202003210946255_AddedComments.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003311224548_AddedAffiliates.resx">
+      <DependentUpon>202003311224548_AddedAffiliates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003240636116_ChangedFieldInHistoryToString.resx">
-      <DependentUpon>202003240636116_ChangedFieldInHistoryToString.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004010740072_AddedShippingDetailsToAffiliateSell.resx">
+      <DependentUpon>202004010740072_AddedShippingDetailsToAffiliateSell.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003241311381_AddedPublicProfiles.resx">
-      <DependentUpon>202003241311381_AddedPublicProfiles.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004011228337_ChangedAffiliateSellToCollection.resx">
+      <DependentUpon>202004011228337_ChangedAffiliateSellToCollection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003241316088_AddedPublicProfiles2.resx">
-      <DependentUpon>202003241316088_AddedPublicProfiles2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003241441115_ChangedPublicProfileToInt.resx">
-      <DependentUpon>202003241441115_ChangedPublicProfileToInt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003241450141_ChangedThenameOfIdfield.resx">
-      <DependentUpon>202003241450141_ChangedThenameOfIdfield.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003250702076_somethingChangedWithUserProfile.resx">
-      <DependentUpon>202003250702076_somethingChangedWithUserProfile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003260748115_AddedDiscountsToProduct.resx">
-      <DependentUpon>202003260748115_AddedDiscountsToProduct.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004011256044_AddedNameAndImageToAS.resx">
+      <DependentUpon>202004011256044_AddedNameAndImageToAS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

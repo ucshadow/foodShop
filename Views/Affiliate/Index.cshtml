@@ -1,0 +1,39 @@
+﻿@model FoodStore.Models.AffiliateModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1> You are an affiliate </h1>
+<h2> Your affiliate id: @Model.Affiliate.AffiliateId</h2>
+<h3> Your affiliate sells:</h3>
+
+@if(Model.Affiliate.Sells != null && Model.Affiliate.Sells.Count() > 0)
+{
+    foreach(var sell in Model.Affiliate.Sells)
+    {
+        <div style="border:1px solid gray; padding:10px">
+            <div>
+                @sell.ProductName
+            </div>
+            <img src="@sell.ProductImage" />
+            <div>
+                Quantity: @sell.Quantity
+            </div>
+
+            <div>
+                Price: @sell.SellPrice
+            </div>
+
+            <br />
+            <div>
+                @sell.ShippingDetails.Name from @sell.ShippingDetails.Line1 @sell.ShippingDetails.Country
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p> you have no sells yet! </p>
+}
+

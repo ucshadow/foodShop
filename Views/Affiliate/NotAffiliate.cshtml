@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "NotAffiliate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Become an affiliate</h2>
+
+@using (Html.BeginForm("BecomeAffiliate", "Affiliate")) 
+{ 
+    <input type="submit" value="BECOME!" />
+}
+

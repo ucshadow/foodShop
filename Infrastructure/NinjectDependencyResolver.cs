@@ -31,6 +31,7 @@ namespace FoodStore.Infrastructure
             _kernel.Bind<IOrderProcessor>().To<OrderProcessor>().InRequestScope();
             _kernel.Bind<ICommentsRepository>().To<EFCommentRepository>().InRequestScope();
             _kernel.Bind<IPublicProfilesRepository>().To<EFPublicProfileRepository>().InRequestScope();
+            _kernel.Bind<IAffiliateRepository>().To<EFAffiliateRepository>().InRequestScope();
         }
     }
 }

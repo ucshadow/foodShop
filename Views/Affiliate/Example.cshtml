@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Example";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    Your affiliate id: @ViewBag.AffiliateId
+</h2>
+
+<br />
+<br />
+<br />
+
+<div>
+    <h3 id="productName">Name: </h3>
+    <img id="productImage" src="#" />
+    <p id="productPrice">Price: </p>
+</div>
+
+<div>
+    <input type="text" placeholder="itemId" id="itemId" />
+    <button onclick="getProductById()"> Get </button>
+</div>
+
+<br/>
+<br/>
+<br/>
+<div>
+    <h1>
+        Delivery address
+    </h1>
+
+    <div>
+        <input type="text" placeholder="Line 1" id="line1" required />
+        <br />
+        <input type="text" placeholder="Name" id="name" required />
+        <br />
+        <input type="text" placeholder="Country" id="country" required />
+        <br />
+        <br />
+        <br />
+        <input type="text" placeholder="how many you buy" id="count" required />
+        <br />
+        <input type="text" placeholder="Affiliate id" id="affiliateId" required />
+        <br />
+        <br />
+        <button onclick="sellItem()" class="btn btn-success"> Buy </button>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/affiliateExample.js")
+

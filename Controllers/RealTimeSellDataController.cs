@@ -9,7 +9,7 @@ namespace FoodStore.Controllers
         [HttpPost]
         public ActionResult GetSellData()
         {
-            var res = RealTimeSellData.P;
+            var res = RealTimeSellData.TrackedProducts;
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 

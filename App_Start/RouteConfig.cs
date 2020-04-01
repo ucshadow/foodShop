@@ -52,12 +52,12 @@ namespace FoodStore
             );
 
             routes.MapRoute(null,
-                "{category}",
+                "Category/{category}",
                 new { controller = "Product", action = "List", page = 1 }
             );
 
             routes.MapRoute(null,
-                "{category}/Page{page}",
+                "Category/{category}/Page{page}",
                 new { controller = "Product", action = "List" },
                 new { page = @"\d+" }
             );
@@ -65,6 +65,10 @@ namespace FoodStore
             routes.MapRoute("Edit public profile",
                 "edit/publicProfile",
                 new { controller = "PublicProfile", action = "Index" });
+
+            routes.MapRoute("Affiliate example",
+                "affiliateExample",
+                new { controller = "Affiliate", action = "Example" });
 
             routes.MapRoute(null, "{controller}/{action}");
         }

@@ -13,14 +13,20 @@ namespace FoodStore.Infrastructure.LocalAPI
     public class RealTimeSellData
     {
         private readonly Random _rnd = new Random();
-        public static List<TrackedProduct> P = new List<TrackedProduct>();        
+        public static List<TrackedProduct> TrackedProducts = new List<TrackedProduct>();        
         public static List<Purchase> LastSold { get; set; }
         private readonly EFDbContext _context;
 
         public RealTimeSellData()
         {
             _context = new EFDbContext();
-            LastSold = _context.PurchaseHistory.OrderByDescending(e => e.PurchaseID).Take(4).ToList();
+
+            // loading all the history is not good.. but works for now
+            LastSold = _context.PurchaseHistory
+                .OrderByDescending(e => e.PurchaseID)
+                .GroupBy(e => e.ProductId) // remove duplicates so we wont end up with 4 asparagus pictures :)
+                .Select(e => e.FirstOrDefault())
+                .Take(4).ToList();
            
             Init();
         }
@@ -43,7 +49,7 @@ namespace FoodStore.Infrastructure.LocalAPI
 
         public void AddTrackedProduct(Product product)
         {
-            P.Add(new TrackedProduct
+            TrackedProducts.Add(new TrackedProduct
             {
                 Remaining = product.Quantity,
                 Product = product,
@@ -51,12 +57,24 @@ namespace FoodStore.Infrastructure.LocalAPI
             });
         }
 
-        public static void ReplaceTrackedProduct(Product product)
+        public static void ReplaceOrUpdateTrackedProduct(Product product)
         {
+
+            // if product exists, just update the counter
+
+            for(var i = 0; i < TrackedProducts.Count(); i++)
+            {
+                if(TrackedProducts[i].Product.ProductID == product.ProductID)
+                {
+                    TrackedProducts[i].Remaining -= 1;
+                    return;
+                }
+            }
+
             // remove oldest 
             // could also do it by PurchaseDate, but this should work just fine
             var removedIndex = FindAndRemoveMin();
-            P.Insert(removedIndex, new TrackedProduct
+            TrackedProducts.Insert(removedIndex, new TrackedProduct
             {
                 Remaining = product.Quantity,
                 Product = product,
@@ -67,7 +85,7 @@ namespace FoodStore.Infrastructure.LocalAPI
         private static int FindAndRemoveMin()
         {
             var curMin = int.MaxValue;
-            foreach(var t in P)
+            foreach(var t in TrackedProducts)
             {
                 if(t.Product.ProductID <= curMin)
                 {
@@ -75,11 +93,11 @@ namespace FoodStore.Infrastructure.LocalAPI
                 }
             }
 
-            for(var i = 0; i < P.Count; i++)
+            for(var i = 0; i < TrackedProducts.Count; i++)
             {
-                if(P.ElementAt(i).Product.ProductID == curMin)
+                if(TrackedProducts.ElementAt(i).Product.ProductID == curMin)
                 {
-                    P.RemoveAt(i);
+                    TrackedProducts.RemoveAt(i);
                     return i;
                 }
             }

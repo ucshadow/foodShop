@@ -7,6 +7,11 @@
 
 @using FoodStore.HtmlHelpers
 
+@if (Model.IsUsserAffiliated)
+{
+    <p style="color:darkred"> productID: @Model.Product.ProductID </p>
+}
+
 <h2>Details</h2>
 <div>
     @Model.Product.Name

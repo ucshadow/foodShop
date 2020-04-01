@@ -29,7 +29,7 @@ namespace FoodStore.Concrete
         public void SavePurchase(Purchase purchase)
         {
             if(purchase.PurchaseID == 0)
-            {
+            {                
                 _context.PurchaseHistory.Add(purchase);
             }       
             else
