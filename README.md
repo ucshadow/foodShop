@@ -149,8 +149,6 @@ and cannot change the rating.
 These are general discount, not related to the daily discounts and can pe repsented on 
 any Product.
 
-![Ratings](https://i.imgur.com/jmL7fZT.jpg "Ratings") 
-
 ##### Nutrition Data
 
 You can click on Nutrition data on any product and get a list of nutrition data available for
