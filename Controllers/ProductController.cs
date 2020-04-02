@@ -23,17 +23,20 @@ namespace FoodStore.Controllers
         private readonly ICommentsRepository _commentsRepository;
         private readonly IPublicProfilesRepository _ppRepository;
         private readonly IAffiliateRepository _aRepository;
+        private readonly IStickerRepository _sRepository;
         public int PageSize = 8;
         public readonly Random Rnd = new Random();
 
         public ProductController(IProductRepository productRepository, IPublicProfilesRepository ppRepository,
-            IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository, IAffiliateRepository affiliateRepository)
+            IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository, 
+            IAffiliateRepository affiliateRepository, IStickerRepository sticker)
         {
             Repository = productRepository;
             _purchaseHistoryRepository = pRepository;
             _commentsRepository = commentsRepository;
             _ppRepository = ppRepository;
             _aRepository = affiliateRepository;
+            _sRepository = sticker;
         }
 
         public ViewResult List(string category, int page = 1, string q = "", string message = "")
@@ -161,7 +164,7 @@ namespace FoodStore.Controllers
                     Related = Repository.Products.Where(e => e.Category == p.Category).OrderBy(e => Rnd.Next()).Take(4).ToList(),
                     IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
                     OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
-                    IsUsserAffiliated = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId()) != null
+                    IsUsserAffiliated = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId()) != null,                    
                 };
                 var allCommentsForThisProduct = _commentsRepository.GetProductComments(p.ProductID);
                 foreach (var comment in allCommentsForThisProduct)

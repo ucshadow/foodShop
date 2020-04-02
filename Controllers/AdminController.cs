@@ -18,9 +18,12 @@ namespace FoodStore.Controllers
     public class AdminController : Controller
     {
         private readonly IProductRepository _pRepository;
-        public AdminController(IProductRepository repo)
+        private readonly IStickerRepository _sRepository;
+
+        public AdminController(IProductRepository repo, IStickerRepository sticker)
         {
             _pRepository = repo;
+            _sRepository = sticker;
         }
         public ViewResult Index()
         {
@@ -38,6 +41,12 @@ namespace FoodStore.Controllers
         {
             var a = new AdminDiscountsModel();
             return View(a);
+        }
+
+        public ViewResult Stickers()
+        {
+            ViewBag.AllStickers = _sRepository.GetAllStickers();
+            return View(new StickerModel());
         }
 
         public ViewResult Edit(int productId)
@@ -190,6 +199,22 @@ namespace FoodStore.Controllers
                 DiscountProvider.DiscountsManager.SetMaxProductsDiscounted(DiscountProvider.DiscountsManager.GetMaxProductsDiscounted() + 1);
 
             }
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        [HttpPost]
+        public ActionResult ClearAllDiscounts()
+        {
+            foreach(var p in _pRepository.Products.ToList())
+            {
+                if(p.Discount > 0)
+                {
+                    p.Discount = 0;
+                    _pRepository.SaveProduct(p);
+                }
+            }
+            GlobalProductCache.ProductCache.Clear();
+            GlobalProductCache.SetUp();
             return Redirect(Request.UrlReferrer.ToString());
         }
 

@@ -17,7 +17,7 @@ function fill(d) {
     let bo = document.getElementById('cBody');
     for (let i of ing) {
         let a = document.createElement('a');
-        a.href = window.location.origin + '/Search%20Results?q=' + i;
+        a.href = window.location.origin + '/?q=' + i;
         let b = document.createElement('div');
         b.style.width = '100%';
         a.style.width = '100%';

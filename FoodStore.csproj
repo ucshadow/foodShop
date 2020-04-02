@@ -192,6 +192,7 @@
     <Compile Include="Abstract\IProductRepository.cs" />
     <Compile Include="Abstract\IPublicProfilesRepository.cs" />
     <Compile Include="Abstract\IPurchaseHistoryRepository.cs" />
+    <Compile Include="Abstract\IStickerRepository.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -205,10 +206,12 @@
     <Compile Include="Concrete\EFProductRepository.cs" />
     <Compile Include="Concrete\EFPublicProfileRepository.cs" />
     <Compile Include="Concrete\EFPurchaseHistoryRepository.cs" />
+    <Compile Include="Concrete\EFStickerRepository.cs" />
     <Compile Include="Concrete\OrderProcessor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminProductController.cs" />
+    <Compile Include="Controllers\Admin\AdminStickerController.cs" />
     <Compile Include="Controllers\AffiliateController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
@@ -228,6 +231,7 @@
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\PublicProfile.cs" />
     <Compile Include="Entities\Purchase.cs" />
+    <Compile Include="Entities\Sticker.cs" />
     <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
     <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
@@ -239,6 +243,9 @@
     <Compile Include="Infrastructure\Discounts\IDiscountsManager.cs" />
     <Compile Include="Infrastructure\Helpers.cs" />
     <Compile Include="Infrastructure\LocalAPI\GlobalProductCache.cs" />
+    <Compile Include="Infrastructure\Stickers\IStickerManager.cs" />
+    <Compile Include="Infrastructure\Stickers\StickerManager.cs" />
+    <Compile Include="Infrastructure\Stickers\StickerManagerProvider.cs" />
     <Compile Include="Migrations\202003311224548_AddedAffiliates.cs" />
     <Compile Include="Migrations\202003311224548_AddedAffiliates.Designer.cs">
       <DependentUpon>202003311224548_AddedAffiliates.cs</DependentUpon>
@@ -254,6 +261,14 @@
     <Compile Include="Migrations\202004011256044_AddedNameAndImageToAS.cs" />
     <Compile Include="Migrations\202004011256044_AddedNameAndImageToAS.Designer.cs">
       <DependentUpon>202004011256044_AddedNameAndImageToAS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004020635205_AddedStickers.cs" />
+    <Compile Include="Migrations\202004020635205_AddedStickers.Designer.cs">
+      <DependentUpon>202004020635205_AddedStickers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004020643280_ChangedFromStickerListToString.cs" />
+    <Compile Include="Migrations\202004020643280_ChangedFromStickerListToString.Designer.cs">
+      <DependentUpon>202004020643280_ChangedFromStickerListToString.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminCacheModel.cs" />
@@ -281,6 +296,7 @@
     <Compile Include="Models\ProductsListViewModel.cs" />
     <Compile Include="Models\PublicProfileModel.cs" />
     <Compile Include="Models\PurchaseHistory.cs" />
+    <Compile Include="Models\StickerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -431,6 +447,7 @@
     <Content Include="img\blog\.DS_Store" />
     <Content Include="img\gallery\.DS_Store" />
     <Content Include="img\Thumbs.db" />
+    <Content Include="README.md" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\free\vendors\bootstrap\bootstrap.bundle.min.js" />
     <Content Include="Scripts\free\vendors\bootstrap\bootstrap.min.css" />
@@ -894,6 +911,7 @@
     <Content Include="Views\Affiliate\Index.cshtml" />
     <Content Include="Views\Affiliate\NotAffiliate.cshtml" />
     <Content Include="Views\Affiliate\Example.cshtml" />
+    <Content Include="Views\Admin\Stickers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -923,6 +941,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004011256044_AddedNameAndImageToAS.resx">
       <DependentUpon>202004011256044_AddedNameAndImageToAS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004020635205_AddedStickers.resx">
+      <DependentUpon>202004020635205_AddedStickers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004020643280_ChangedFromStickerListToString.resx">
+      <DependentUpon>202004020643280_ChangedFromStickerListToString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

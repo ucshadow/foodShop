@@ -1,0 +1,47 @@
+﻿@model StickerModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using FoodStore.Models
+
+@if (ViewBag.AllStickers != null)
+{
+    <h3>Stickers:</h3>
+    <div style="padding:20px; border:1px solid gray; display:flex">
+
+        @foreach (var sticker in ViewBag.AllStickers)
+        {
+            <div style="padding:10px; border: 1px solid gray">
+                <div class="btn btn-info">
+                    @sticker.Name -> @sticker.StickerId
+                </div>
+                @using(Html.BeginForm ("DeleteSticker", "AdminSticker"))
+                {
+                    @Html.Hidden("stickerId", sticker.StickerId as int?)
+
+                    <input type="submit" class="btn btn-danger" value="x" />
+                    
+                }
+                <div>@sticker.ExpirationDate</div>
+                    <div>@sticker.ProductsAppliedTo</div>
+            </div>
+        }
+    </div>
+}
+
+<br/>
+
+<h3>Add sticker</h3>
+@using (Html.BeginForm("AddSticker", "AdminSticker"))
+{
+    @Html.TextBoxFor(e => e.Sticker.Name, new { @placeholder = "Name" });
+    @Html.TextBoxFor(e => e.Sticker.Description, new { @placeholder = "Description" });
+    @Html.TextBoxFor(e => e.Sticker.ExpirationDate, new { @placeholder = "Expiration date" });
+    @Html.TextBoxFor(e => e.Sticker.ProductsAppliedTo, new { @placeholder = "Products applied to" });
+
+    <input type="submit" value="Add" class="btn btn-success" />
+
+}
+

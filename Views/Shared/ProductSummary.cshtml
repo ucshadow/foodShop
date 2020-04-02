@@ -2,17 +2,28 @@
 
 @using FoodStore.Infrastructure
 @using FoodStore.Infrastructure.Discounts
+@using FoodStore.Infrastructure.Stickers
 
-<!-- Maybe switch to ProductModel? -->
+
+@{
+    var stickers = StickerManagerProvider.StickerManager.GetStickersOnProduct(Model.ProductID);
+}
+
 <div class="">
     <div class="card text-center card-product">
         <div class="card-product__img">
-
 
             <a href="@Url.Action("Details", "Product", new {productName = @Model.Name})">
                 <div class="card-product__title btn-info" style="width:100%">@Model.Name</div>
                 <img class="card-img" src="@Model.Picture" alt="">
             </a>
+            @if (stickers != null)
+            {
+                foreach (var s in stickers)
+                {
+                    <p class="btn-dark"> @s.Name </p>
+                }
+            }
             <div class="card-product__title btn-default" style="width:100%">[Rating: @Model.Rating] [Votes: @Model.NumberOfVotes]</div>
 
         </div>

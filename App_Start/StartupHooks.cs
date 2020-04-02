@@ -1,5 +1,6 @@
 ﻿using FoodStore.HtmlHelpers;
 using FoodStore.Infrastructure.Discounts;
+using FoodStore.Infrastructure.Stickers;
 using FoodStore.Infrastructure.LocalAPI;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace FoodStore
             new RealTimeSellData();
             GlobalProductCache.SetUp();
             DiscountProvider.DiscountsManager = new DiscountsOfTheDayAutoHandler();
+            StickerManagerProvider.StickerManager = new StickerManager();
         }
     }
 }

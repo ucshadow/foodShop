@@ -10,6 +10,6 @@ namespace FoodStore.Domain.Concrete
         public DbSet<Comment> Comments { get; set; }
         public DbSet<PublicProfile> PublicProfiles { get; set; }
         public DbSet<Affiliate> Affiliates { get; set; }
-        //public DbSet<AffiliateSell> AffiliateSells { get; set; }
+        public DbSet<Sticker> Stickers { get; set; }
     }
 }

@@ -14,11 +14,11 @@ namespace FoodStore.Controllers
         private static string _s = "";
         private Random _rnd = new Random();
         // GET: RecipeOfTheDay
-        public ActionResult Index(bool refresh=false)
+        public ActionResult Index(int refresh=0)
         {
             Debug.WriteLine(refresh);
             var json = "";
-            if(_s == "" || refresh) 
+            if(_s == "" || refresh != 0) 
             {
                 var a = Environment.GetEnvironmentVariable("f_app", EnvironmentVariableTarget.Machine);
                 var k = Environment.GetEnvironmentVariable("f_k", EnvironmentVariableTarget.Machine);
