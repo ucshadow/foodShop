@@ -21,12 +21,12 @@ namespace FoodStore.Infrastructure.LocalAPI
         {
             _context = new EFDbContext();
 
-            // loading all the history is not good.. but works for now
+            // loading all the history is not good..but works for now
             LastSold = _context.PurchaseHistory
-                .OrderByDescending(e => e.PurchaseID)
-                .GroupBy(e => e.ProductId) // remove duplicates so we wont end up with 4 asparagus pictures :)
-                .Select(e => e.FirstOrDefault())
-                .Take(4).ToList();
+              .OrderByDescending(e => e.PurchaseID)
+              .GroupBy(e => e.ProductId) // remove duplicates so we wont end up with 4 asparagus pictures :)
+              .Select(e => e.FirstOrDefault())
+              .Take(4).ToList();
            
             Init();
         }

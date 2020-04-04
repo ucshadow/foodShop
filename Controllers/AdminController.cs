@@ -19,11 +19,16 @@ namespace FoodStore.Controllers
     {
         private readonly IProductRepository _pRepository;
         private readonly IStickerRepository _sRepository;
+        private readonly IAffiliateRepository _aRepository;
+        private readonly IAffiliateProductRepository _apRepository;
 
-        public AdminController(IProductRepository repo, IStickerRepository sticker)
+        public AdminController(IProductRepository repo, IStickerRepository sticker,
+            IAffiliateRepository affiliateRepository, IAffiliateProductRepository affiliateProductRepository)
         {
             _pRepository = repo;
             _sRepository = sticker;
+            _aRepository = affiliateRepository;
+            _apRepository = affiliateProductRepository;
         }
         public ViewResult Index()
         {
@@ -47,6 +52,15 @@ namespace FoodStore.Controllers
         {
             ViewBag.AllStickers = _sRepository.GetAllStickers();
             return View(new StickerModel());
+        }
+
+        public ViewResult Affiliates()
+        {
+            return View(new AdminAffiliatesModel
+            {
+                Affiliates = _aRepository.GetAffiliates(),
+                Products = _apRepository.GetAffiliateProducts().ToList()
+            });
         }
 
         public ViewResult Edit(int productId)
@@ -95,6 +109,8 @@ namespace FoodStore.Controllers
                 TempData["message"] = string.Format("{0} was deleted",
                 deletedProduct.Name);
             }
+            GlobalProductCache.RemoveProduct(productId);
+            GlobalCache.GetCache().ClearCachedItem<ProductModel>(productId);
             return RedirectToAction("Index");
         }
 

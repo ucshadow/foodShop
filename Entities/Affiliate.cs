@@ -12,6 +12,7 @@ namespace FoodStore.Entities
         [Key]
         public string AffiliateId { get; set; }
         public string UserId { get; set; }
+        public string AffiliateName { get; set; }
         public ICollection<AffiliateSell> Sells { get; set; }
     }    
 }

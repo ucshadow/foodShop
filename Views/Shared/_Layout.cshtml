@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using FoodStore.Infrastructure.LocalAPI
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -95,16 +97,17 @@
                 <div class="row section_gap">
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="single-footer-widget tp_widgets">
-                            <h4 class="footer_title large_title">Our Mission</h4>
+                            <h4 class="footer_title large_title">FoodStore</h4>
                             <p>
-                                So seed seed green that winged cattle in. Gathering thing made fly you're no
-                                divided deep moved us lan Gathering thing us land years living.
+                                The store where you can browse and buy food items.
                             </p>
                             <p>
-                                So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep moved
+                                You can become an affiliate and sell your products using this site or sell products already on the site using your
+                                own site/app.
                             </p>
                         </div>
                     </div>
+
                     <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
                         <div class="single-footer-widget tp_widgets">
                             <h4 class="footer_title">Quick Links</h4>
@@ -122,12 +125,12 @@
                         <div class="single-footer-widget instafeed">
                             <h4 class="footer_title">Gallery</h4>
                             <ul class="list instafeed d-flex flex-wrap">
-                                <li><img src="img/gallery/r1.jpg" alt=""></li>
-                                <li><img src="img/gallery/r2.jpg" alt=""></li>
-                                <li><img src="img/gallery/r3.jpg" alt=""></li>
-                                <li><img src="img/gallery/r5.jpg" alt=""></li>
-                                <li><img src="img/gallery/r7.jpg" alt=""></li>
-                                <li><img src="img/gallery/r8.jpg" alt=""></li>
+
+                                @foreach (var p in FooterProvider.GetFooterData())
+                                {
+
+                                    <li><a href="@FooterProvider.FormatHref(p.Name)"><img style="width:70px;height:70px" src="@p.Picture" alt="@p.Name"></a></li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -181,6 +184,7 @@
     <!--================ End footer Area  =================-->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/realTimeSearch.js")
     @Scripts.Render("~/Scripts/realTimeSearch.js")
     @RenderSection("scripts", required: false)
 

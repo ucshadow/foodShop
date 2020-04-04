@@ -6,34 +6,106 @@
 
 <h1> You are an affiliate </h1>
 <h2> Your affiliate id: @Model.Affiliate.AffiliateId</h2>
-<h3> Your affiliate sells:</h3>
+<h2> Your affiliate name: @Model.Affiliate.AffiliateName</h2>
+<div style="border: 1px solid gray; padding: 10px;">
+    <h3> Your affiliate external sells:</h3>
 
-@if(Model.Affiliate.Sells != null && Model.Affiliate.Sells.Count() > 0)
-{
-    foreach(var sell in Model.Affiliate.Sells)
+    <br />
+    <br />
+    @if (Model.Affiliate.Sells != null && Model.Affiliate.Sells.Count() > 0)
     {
-        <div style="border:1px solid gray; padding:10px">
-            <div>
-                @sell.ProductName
-            </div>
-            <img src="@sell.ProductImage" />
-            <div>
-                Quantity: @sell.Quantity
-            </div>
+        foreach (var sell in Model.Affiliate.Sells)
+        {
+            <div style="border:1px solid gray; padding:10px">
+                <div>
+                    @sell.ProductName
+                </div>
+                <img src="@sell.ProductImage" />
+                <div>
+                    Quantity: @sell.Quantity
+                </div>
 
-            <div>
-                Price: @sell.SellPrice
-            </div>
+                <div>
+                    Price: @sell.SellPrice
+                </div>
 
-            <br />
-            <div>
-                @sell.ShippingDetails.Name from @sell.ShippingDetails.Line1 @sell.ShippingDetails.Country
+                <br />
+                <div>
+                    @sell.ShippingDetails.Name from @sell.ShippingDetails.Line1 @sell.ShippingDetails.Country
+                </div>
             </div>
-        </div>
+        }
     }
-}
-else
-{
-    <p> you have no sells yet! </p>
-}
+    else
+    {
+        <p> you have no external sells yet! </p>
+    }
+</div>
 
+<br/>
+<br/>
+<br/>
+
+<div style="border: 1px solid gray; padding: 10px;">
+    <h4>Affiliate Products</h4>
+    <br />
+    <a href="/Affiliate/CreateAffiliateProduct"> Add Affiliate Product </a>
+    <br />
+
+    <div class="container-fluid row">
+
+        @foreach (var product in Model.AffiliateProducts)
+        {
+            <div class="card col-sm-1">
+                <img class="card-img-top" src="@product.Picture" alt="@product.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <p class="card-text">Price: @product.Price</p>
+                    <p class="card-text">Quantity: @product.Quantity</p>
+                    @if (product.PendingAdminApproval)
+                    {
+                        <p style="color:deepskyblue">Pending approval</p>
+                    }
+                    else
+                    {
+                        if (product.Approved)
+                        {
+                            <p style="color:green">Approved</p>
+                        }
+                        else
+                        {
+                            <p style="color:red">Rejected</p>
+                        }
+                    }
+                    @using (Html.BeginForm("DeleteAffiliateProduct", "Affiliate"))
+                    {
+                        @Html.Hidden("affiliateProductID", product.AffiliateProductID)
+                        <input type="submit" value="x" class="btn-danger" style="position:absolute;right:0px;top:0px" />
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <h4> Affiliate PRODUCT Sells </h4>
+    @foreach (var k in Model.AffiliateProductSales)
+    {
+        <div>
+            @k.Key :
+            @foreach (var d in k.Value)
+            {
+                <span style="border: 1px solid gray; padding:5px;">
+                    [@d.Date] @d.Count x @d.Price
+                </span>
+            }
+        </div>
+        <br />
+        <br />
+    }
+
+</div>

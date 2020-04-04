@@ -1,13 +1,13 @@
 ﻿using FoodStore.Abstract;
 using FoodStore.Domain.Concrete;
 using FoodStore.Entities;
+using FoodStore.Infrastructure.LocalAPI;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 
 namespace FoodStore.Concrete
 {
-    // todo: Also migrate the Azure DB
     public class EFProductRepository : IProductRepository
     {
         private readonly EFDbContext _context = new EFDbContext();
@@ -19,11 +19,11 @@ namespace FoodStore.Concrete
 
         public List<Product> GetClone()
         {
-            if(Clone == null)
+            if (Clone == null)
             {
                 var z = new List<Product>(Products);
                 Clone = new List<Product>();
-                foreach(var i in z)
+                foreach (var i in z)
                 {
                     var p = new Product
                     {
@@ -38,7 +38,9 @@ namespace FoodStore.Concrete
                         Unit = i.Unit,
                         Rating = i.Rating,
                         NumberOfVotes = i.NumberOfVotes,
-                        Discount = i.Discount
+                        Discount = i.Discount,
+                        SoldBy = i.SoldBy,
+                        AffiliateId = i.AffiliateId
                     };
                     Clone.Add(p);
                 }
@@ -48,9 +50,10 @@ namespace FoodStore.Concrete
 
         public void SaveProduct(Product product)
         {
+            Product p;
             if (product.ProductID == 0)
             {
-                _context.Products.Add(product);
+                p = _context.Products.Add(product);
             }
             else
             {
@@ -68,12 +71,17 @@ namespace FoodStore.Concrete
                     dbEntry.Rating = product.Rating;
                     dbEntry.NumberOfVotes = product.NumberOfVotes;
                     dbEntry.Discount = product.Discount;
+                    dbEntry.SoldBy = product.SoldBy;
+                    dbEntry.AffiliateId = product.AffiliateId;
                 }
+                p = dbEntry;
             }
             // this may throw validation errors and fail silently so Ill leave it like this :D
             try
             {
                 _context.SaveChanges();
+                Clone.Add(p);
+                GlobalProductCache.ProductCache.Add(p);
             }
             catch (DbEntityValidationException ex)
             {

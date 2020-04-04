@@ -30,7 +30,8 @@ namespace FoodStore.Concrete
                     ProductCount = e.Quantity,
                     UserId = userId,
                     Price = e.Product.Discount > 0 ? Helpers.CalculateDiscount(e.Product.Price, e.Product.Discount) : e.Product.Price,
-                    ProductId = e.Product.ProductID
+                    ProductId = e.Product.ProductID,
+                    AffiliateId = e.Product.AffiliateId
                 };
                 e.Product.Quantity -= 1;
                 _pRepository.SaveProduct(e.Product);
@@ -51,7 +52,8 @@ namespace FoodStore.Concrete
                 ProductCount = 1,
                 UserId = affiliateId,
                 Price = e.Discount > 0 ? Helpers.CalculateDiscount(e.Price, e.Discount) : e.Price,
-                ProductId = e.ProductID
+                ProductId = e.ProductID,
+                AffiliateId = e.AffiliateId,
             };
             e.Quantity -= 1;
             _pRepository.SaveProduct(e);

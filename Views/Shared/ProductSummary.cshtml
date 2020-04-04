@@ -15,7 +15,11 @@
 
             <a href="@Url.Action("Details", "Product", new {productName = @Model.Name})">
                 <div class="card-product__title btn-info" style="width:100%">@Model.Name</div>
-                <img class="card-img" src="@Model.Picture" alt="">
+                @if (!string.IsNullOrEmpty(Model.SoldBy))
+                {
+                    <div class="card-product__title btn-primary" style="width:100%; max-width:220px">[@Model.SoldBy]</div>
+                }
+                <img class="card-img" src="@Model.Picture" alt="" style="max-width:220px;">
             </a>
             @if (stickers != null)
             {

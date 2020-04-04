@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
 namespace FoodStore.Entities
 {
-    public class Product
+    public class AffiliateProduct
     {
-        [HiddenInput(DisplayValue = false)]
-        public int ProductID { get; set; }
+        public int AffiliateProductID { get; set; }
 
         [Required(ErrorMessage = "Please enter a product name")]
-
         public string Name { get; set; }
 
         [DataType(DataType.MultilineText)]
@@ -35,16 +36,9 @@ namespace FoodStore.Entities
 
         [Required(ErrorMessage = "Please specify a picture url")]
         public string Picture { get; set; }
-
-        public decimal Rating { get; set; }
-        public int NumberOfVotes { get; set; }
-
-        // hell yah discounts, love em :D
-        [Required]
-        [Range(0, 100, ErrorMessage = "Please enter a discount between 0 and 100")]
-        public decimal Discount { get; set; }
-
-        public string SoldBy { get; set; }
+        public string AffiliateName { get; set; }
         public string AffiliateId { get; set; }
+        public bool PendingAdminApproval { get; set; } = true;
+        public bool Approved { get; set; } = false;
     }
 }

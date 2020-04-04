@@ -56,11 +56,11 @@ namespace FoodStore.Infrastructure.Discounts
 
         private void AddDiscounts()
         {
-            for(var i = 0; i < MaxProductsDiscounted; i++)
+            for (var i = 0; i < MaxProductsDiscounted; i++)
             {
                 // in it's current form, duplicates cann appear, but I am not going to modify it,
                 // at least not now
-                var index = _rnd.Next(0, _cachedProducts.Count());                
+                var index = _rnd.Next(0, _cachedProducts.Count());
                 var product = _cachedProducts.ElementAt(index);
                 AddItem(product);
             }

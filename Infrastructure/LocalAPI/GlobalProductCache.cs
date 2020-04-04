@@ -31,5 +31,17 @@ namespace FoodStore.Infrastructure.LocalAPI
                 }
             }
         }
+
+        public static void RemoveProduct(int productId)
+        {
+            for (var i = 0; i < ProductCache.Count(); i++)
+            {
+                if (ProductCache[i].ProductID == productId)
+                {
+                    ProductCache.RemoveAt(i);
+                    return;
+                }
+            }
+        }
     }
 }

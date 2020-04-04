@@ -24,7 +24,7 @@ namespace FoodStore.Controllers
         private readonly IPublicProfilesRepository _ppRepository;
         private readonly IAffiliateRepository _aRepository;
         private readonly IStickerRepository _sRepository;
-        public int PageSize = 8;
+        public int PageSize = 10;
         public readonly Random Rnd = new Random();
 
         public ProductController(IProductRepository productRepository, IPublicProfilesRepository ppRepository,
@@ -46,7 +46,7 @@ namespace FoodStore.Controllers
             var searchReultsCount = 0;
             ViewBag.Message = message;
 
-            if(q == null || q.Trim().Length == 0)
+            if (q == null || q.Trim().Length == 0)
             {
                 products = Repository.Products
                 .Where(p => category == null || p.Category == category)
@@ -58,7 +58,7 @@ namespace FoodStore.Controllers
             {   // search
                 var parsed = ParseNameForSearch(q.ToLower());
                 var x = new HashSet<string>();
-                foreach(var i in parsed.Split(' '))
+                foreach (var i in parsed.Split(' '))
                 {
                     x.Add(i);
                 }

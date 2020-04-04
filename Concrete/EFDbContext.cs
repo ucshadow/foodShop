@@ -11,5 +11,6 @@ namespace FoodStore.Domain.Concrete
         public DbSet<PublicProfile> PublicProfiles { get; set; }
         public DbSet<Affiliate> Affiliates { get; set; }
         public DbSet<Sticker> Stickers { get; set; }
+        public DbSet<AffiliateProduct> AffiliateProducts { get; set; }
     }
 }

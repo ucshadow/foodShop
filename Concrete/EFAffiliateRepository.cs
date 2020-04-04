@@ -44,13 +44,14 @@ namespace FoodStore.Concrete
             return affiliate;
         }
 
-        public Affiliate CreateAffiliate(string userId)
+        public Affiliate CreateAffiliate(string userId, string name)
         {
             var dbEntry = _context.Affiliates.Add(new Affiliate
             {
                 AffiliateId = Guid.NewGuid().ToString(),
                 UserId = userId,
-                Sells = new List<AffiliateSell>()
+                Sells = new List<AffiliateSell>(),
+                AffiliateName = name
             });
 
             Save();
@@ -74,6 +75,11 @@ namespace FoodStore.Concrete
         public Affiliate GetAffiliateByUserId(string userId)
         {
             return _context.Affiliates.Include(e => e.Sells).FirstOrDefault(e => e.UserId == userId);
+        }
+
+        public List<Affiliate> GetAffiliates()
+        {
+            return _context.Affiliates.ToList();
         }
 
         private void Save()

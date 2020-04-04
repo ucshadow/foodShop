@@ -1,0 +1,93 @@
+﻿@model FoodStore.Models.AdminAffiliatesModel
+@{
+    ViewBag.Title = "Affiliates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Affiliates:</h2>
+@foreach (var aff in Model.Affiliates)
+{
+    <div>
+        @aff.AffiliateName -> @aff.AffiliateId
+    </div>
+    <br />
+}
+
+
+
+<div class="container-fluid row" style="border:1px solid gray; padding:10px;">
+    <h2 class="col-sm-12">Products pending approval</h2>
+
+    @foreach (var product in Model.GetPendingApproval())
+    {
+        <div class="card col-sm-1">
+            <img class="card-img-top" src="@product.Picture" alt="@product.Name">
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">@product.Description</p>
+                <p class="card-text">From: @product.AffiliateName</p>
+                <p class="card-text">Category: @product.Category</p>
+                <p class="card-text">Price: @product.Price</p>
+                <p class="card-text">Quantity: @product.Quantity</p>
+                <p class="card-text">Q: @product.Size @product.Unit</p>
+                @using (Html.BeginForm("Approve", "AdminAffiliate"))
+                {
+                    @Html.Hidden("affiliateProductId", product.AffiliateProductID)
+                    <input type="submit" value="Approve" class="btn-success" style="position:absolute;left:5px;bottom:2px" />
+                }
+                @using (Html.BeginForm("Deny", "AdminAffiliate"))
+                {
+                    @Html.Hidden("affiliateProductId", product.AffiliateProductID)
+                    <input type="submit" value="Deny" class="btn-danger" style="position:absolute;right:5px;bottom:2px" />
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+<div class="container-fluid row" style="border:1px solid gray; padding:10px;">
+    <h2 class="col-sm-12">Products approved</h2>
+
+    @foreach (var product in Model.GetApproved())
+    {
+        <div class="card col-sm-1">
+            <img class="card-img-top" src="@product.Picture" alt="@product.Name">
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">@product.Description</p>
+                <p class="card-text">From: @product.AffiliateName</p>
+                <p class="card-text">Category: @product.Category</p>
+                <p class="card-text">Price: @product.Price</p>
+                <p class="card-text">Quantity: @product.Quantity</p>
+                <p class="card-text">Q: @product.Size @product.Unit</p>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+<div class="container-fluid row" style="border:1px solid gray; padding:10px;">
+    <h2 class="col-sm-12">Products denied</h2>
+
+    @foreach (var product in Model.GetDenied())
+    {
+        <div class="card col-sm-1">
+            <img class="card-img-top" src="@product.Picture" alt="@product.Name">
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">@product.Description</p>
+                <p class="card-text">From: @product.AffiliateName</p>
+                <p class="card-text">Category: @product.Category</p>
+                <p class="card-text">Price: @product.Price</p>
+                <p class="card-text">Quantity: @product.Quantity</p>
+                <p class="card-text">Q: @product.Size @product.Unit</p>
+            </div>
+        </div>
+    }
+
+</div>

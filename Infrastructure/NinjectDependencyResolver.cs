@@ -33,6 +33,7 @@ namespace FoodStore.Infrastructure
             _kernel.Bind<IPublicProfilesRepository>().To<EFPublicProfileRepository>().InRequestScope();
             _kernel.Bind<IAffiliateRepository>().To<EFAffiliateRepository>().InRequestScope();
             _kernel.Bind<IStickerRepository>().To<EFStickerRepository>().InRequestScope();
+            _kernel.Bind<IAffiliateProductRepository>().To<EFAffiliateProductRepository>().InRequestScope();
         }
     }
 }

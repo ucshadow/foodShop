@@ -46,5 +46,13 @@
                 @class = "btn btn-default"
                 })
             </div>
+            
+        }
+    </div>
+    <div>
+        @using (Html.BeginForm("Delete", "Admin"))
+        {
+            @Html.HiddenFor(e => e.ProductID)
+            <input type="submit" value="Delete" class="btn btn-danger"/>
         }
     </div>

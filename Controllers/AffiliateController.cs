@@ -20,13 +20,18 @@ namespace FoodStore.Controllers
         private readonly IAffiliateRepository _aRepository;
         private readonly IProductRepository _pRepository;
         private readonly IOrderProcessor _oProcessor;
+        private readonly IAffiliateProductRepository _apRepository;
+        private readonly IPurchaseHistoryRepository _phRepository;
 
         public AffiliateController(IAffiliateRepository affiliateRepository, IProductRepository productRepository, 
-            IOrderProcessor orderProcessor)
+            IOrderProcessor orderProcessor, IAffiliateProductRepository affiliateProduct,
+            IPurchaseHistoryRepository purchaseHistoryRepository)
         {
             _aRepository = affiliateRepository;
             _pRepository = productRepository;
             _oProcessor = orderProcessor;
+            _apRepository = affiliateProduct;
+            _phRepository = purchaseHistoryRepository;
         }
 
         [Authorize]
@@ -34,16 +39,22 @@ namespace FoodStore.Controllers
         {
             var affiliate = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId());
 
-            if(affiliate != null) return View(new AffiliateModel { Affiliate = affiliate });
+            if (affiliate != null) return View(new AffiliateModel
+            {
+                Affiliate = affiliate,
+                AffiliateProducts = _apRepository.GetAffiliateProductsByAffiliateId(affiliate.AffiliateId).ToList(),
+                AffiliateProductSales = GetAffiliateSells()
+            });
 
             return View("~/Views/Affiliate/NotAffiliate.cshtml");
         }
 
         [HttpPost]
         [Authorize]
-        public ActionResult BecomeAffiliate()
+        public ActionResult BecomeAffiliate(string name)
         {
-            _aRepository.CreateAffiliate(User.Identity.GetUserId());
+            if (name.Length > 100) name = name.Substring(0, 100);
+            _aRepository.CreateAffiliate(User.Identity.GetUserId(), name);
             return Redirect(Request.UrlReferrer.ToString());
         }
 
@@ -79,6 +90,44 @@ namespace FoodStore.Controllers
                 JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult EditAffiliateProduct(int affiliateProductId)
+        {
+            var ap = _apRepository.GetAffiliateProducts().FirstOrDefault(e => e.AffiliateProductID == affiliateProductId);
+            return View(ap);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult EditAffiliateProduct(AffiliateProduct affiliateProduct)
+        {            
+            if (ModelState.IsValid)
+            {
+
+                CheckAffiliateData(affiliateProduct);
+
+                ViewBag.Message = $"Edit {affiliateProduct.Name} success";
+                _apRepository.SaveAffiliateProduct(affiliateProduct);
+                return View(affiliateProduct);
+            }
+            ViewBag.Message = ("Something went wrong");
+            return View(affiliateProduct);
+        }
+
+        public ViewResult CreateAffiliateProduct()
+        {
+            return View("EditAffiliateProduct", new AffiliateProduct());
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult DeleteAffiliateProduct(int affiliateProductID)
+        {
+            Debug.WriteLine(affiliateProductID);    
+            _apRepository.DeleteAffiliateProduct(affiliateProductID);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+
         public ActionResult Example()
         {
             var affiliate = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId());
@@ -96,13 +145,65 @@ namespace FoodStore.Controllers
 
         }
 
+        private void CheckAffiliateData(AffiliateProduct affiliateProduct)
+        {
+            if (!string.IsNullOrEmpty(affiliateProduct.AffiliateName) && !string.IsNullOrEmpty(affiliateProduct.AffiliateId)) return;
+
+            var affiliateUser = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId());
+
+            if (string.IsNullOrEmpty(affiliateProduct.AffiliateName))
+            {
+                affiliateProduct.AffiliateName = affiliateUser.AffiliateName;
+            }
+            if (string.IsNullOrEmpty(affiliateProduct.AffiliateId))
+            {
+                affiliateProduct.AffiliateId = affiliateUser.AffiliateId;
+            }
+
+        }
+
+        private Dictionary<string, List<SellData>> GetAffiliateSells()
+        {
+            var res = new Dictionary<string, List<SellData>>();
+            var aff = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId());
+
+            foreach(var ph in _phRepository.PurchaseHistory)
+            {
+                if(ph.AffiliateId == aff.AffiliateId)
+                {
+                    if(res.ContainsKey(ph.ProductName))
+                    {
+                        res[ph.ProductName].Add(new SellData 
+                        { 
+                            Count = ph.ProductCount, 
+                            Date = ph.PurchaseDate,
+                            Price = ph.Price
+                        });
+                    }
+                    else
+                    {
+                        res[ph.ProductName] = new List<SellData> 
+                        {
+                            new SellData
+                            {
+                                Count = ph.ProductCount,
+                                Date = ph.PurchaseDate,
+                                Price = ph.Price
+                            }
+                        };
+                    }
+                }
+            }
+            return res;
+        }
+
         public class Details
         {
             public Product Product { get; set; }
             public ShippingDetails ShippingDetails { get; set; }
             public int Quantity { get; set; }
             public string AffiliateId { get; set; }
-        } 
+        }        
 
     }
 }
