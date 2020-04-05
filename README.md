@@ -45,7 +45,6 @@
     * Discounts
     * Nutrition Data
     * Real time search
-    * Direct Product import from 3'rd party API's 
 * **Admin**
     * On-site edit of product
     * On-site *add to discounts of the day*
@@ -54,7 +53,7 @@
     * Discounts Utilitites (Add / Remove discounts)
     * Manage Stickers
     * Manage affiliate products
-    * IMport Products from 3'rd party API's
+    * Direct Product import from 3'rd party API's 
 * **Misc**
   * Auto daily discount worker with manageable properties
   * Auto recipe of the day with 3'rd party API
