@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Product importer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Pick", "ProductImporter"))
+{
+
+    @Html.Hidden("picked", "coop.dk")
+
+    <input type="submit" value="coop.dk" class="btn btn-outline-success" style="margin: 20px" />
+    <div type="submit" class="btn-outline-success" style="margin: 20px">
+        Coop is the largest retailer of consumer goods in Denmark operating well-known supermarket chains such as Irma, SuperBrugsen and Kvickly
+    </div>
+}
+
+@using (Html.BeginForm("Pick", "ProductImporter"))
+{
+
+    @Html.Hidden("picked", "skagenfood.dk")
+
+    <input type="submit" value="skagenfood.dk" class="btn btn-outline-success" style="margin: 20px" />
+    <div type="submit" class="btn-outline-success" style="margin: 20px">
+        A box delivery company with an emphasis on fresh fish
+    </div>
+}
+
+@using (Html.BeginForm("Pick", "ProductImporter"))
+{
+
+    @Html.Hidden("picked", "nemlig.com")
+
+    <input type="submit" value="nemlig.com" class="btn btn-outline-success" style="margin: 20px" />
+
+    <div type="submit" class="btn-outline-success" style="margin: 20px">
+        A great selection of products with convenient delivery slots
+    </div>
+}
+

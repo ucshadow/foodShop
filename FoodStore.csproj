@@ -215,6 +215,7 @@
     <Compile Include="Controllers\Admin\AdminAffiliateController.cs" />
     <Compile Include="Controllers\Admin\AdminProductController.cs" />
     <Compile Include="Controllers\Admin\AdminStickerController.cs" />
+    <Compile Include="Controllers\Admin\ProductImporterController.cs" />
     <Compile Include="Controllers\AffiliateController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
@@ -248,6 +249,11 @@
     <Compile Include="Infrastructure\Helpers.cs" />
     <Compile Include="Infrastructure\LocalAPI\GlobalProductCache.cs" />
     <Compile Include="Infrastructure\LocalAPI\FooterProvider.cs" />
+    <Compile Include="Infrastructure\Online\Coop.cs" />
+    <Compile Include="Infrastructure\Online\Nemlig.cs" />
+    <Compile Include="Infrastructure\Online\Skagenfood.cs" />
+    <Compile Include="Infrastructure\Online\IProductImporter.cs" />
+    <Compile Include="Infrastructure\Online\WebWorker.cs" />
     <Compile Include="Infrastructure\Stickers\IStickerManager.cs" />
     <Compile Include="Infrastructure\Stickers\StickerManager.cs" />
     <Compile Include="Infrastructure\Stickers\StickerManagerProvider.cs" />
@@ -902,6 +908,9 @@
     <Content Include="Views\Admin\Stickers.cshtml" />
     <Content Include="Views\Affiliate\EditAffiliateProduct.cshtml" />
     <Content Include="Views\Admin\Affiliates.cshtml" />
+    <Content Include="Views\Admin\ProductImporter.cshtml" />
+    <Content Include="Views\Shared\ProductImporterEditor.cshtml" />
+    <Content Include="Views\ProductImporter\Pick.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

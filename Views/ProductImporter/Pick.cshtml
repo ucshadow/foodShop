@@ -1,0 +1,13 @@
+﻿@model List<FoodStore.Entities.Product>
+@{
+    ViewBag.Title = "Pick";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid row">
+    @foreach (var p in Model)
+    {
+        @Html.Partial("ProductImporterEditor", p)
+    }
+</div>
+

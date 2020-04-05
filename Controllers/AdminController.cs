@@ -4,6 +4,7 @@ using FoodStore.Infrastructure;
 using FoodStore.Infrastructure.Cache;
 using FoodStore.Infrastructure.Discounts;
 using FoodStore.Infrastructure.LocalAPI;
+using FoodStore.Infrastructure.Online;
 using FoodStore.Models;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,11 @@ namespace FoodStore.Controllers
             return View(new StickerModel());
         }
 
+        public ViewResult ProductImporter()
+        {            
+            return View();
+        }
+
         public ViewResult Affiliates()
         {
             return View(new AdminAffiliatesModel
@@ -69,10 +75,12 @@ namespace FoodStore.Controllers
             .FirstOrDefault(p => p.ProductID == productId);
             return View(product);
         }
+        
 
         [HttpPost]
         public ActionResult Edit(Product product)
         {
+
             if (ModelState.IsValid)
             {
                 _pRepository.SaveProduct(product);

@@ -1,7 +1,7 @@
 ﻿@model FoodStore.Entities.Product
 
 @{
-    ViewBag.Title = "Admin: Edit " + @Model.Name;
+    ViewBag.Title = "Admin: Edit " + @Model.Name ?? "unknown";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
