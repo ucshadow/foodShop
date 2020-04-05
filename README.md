@@ -72,7 +72,7 @@ Tracks latest 4 products, including items remaining
 
 ##### Discounts of the day
 
-Shows discounted items for that day (or for the time interval set). If it's set to automanager,
+Shows discounted items for that day (or for the time interval set). If it is set to automanager,
 it auto updates to a given interval. The settings can be modified by an admin in the admin pannel
 for discounts.
 
@@ -134,6 +134,11 @@ page). Now, you can click on Add Affiliate Product link, and be presented with a
 following the standards of the Product on the foodStore website. When you save the product, it now shows on
 your affiliate products tab as *Pending approval* meaning an admin has to approve it for it to become
 an official product on the site.
+
+On the main site, a Product that is sold by an affiliate has a sticker with the affiliate's name in []
+for example [best sweets]
+
+![Affiliate](https://i.imgur.com/KSWdOan.jpg "Sold by best sweets")
 
 Now, an admin can go into the affiliate pannel on the admin side of the site and check if there are any 
 affiliate products waiting approval. If there are, he can then approve the product.
