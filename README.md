@@ -1,4 +1,4 @@
-# Food Store Project by Catalin
+# Food Store Project by Catalin https://foodstoren.azurewebsites.net/
 
 ## Libraries and Frameworks used:
 
@@ -17,12 +17,13 @@
 * **Bootstrap**
 * **Vanilla Javascript**
 
-#### 3'rd part
+#### 3'rd parties
 * **Food names and definitions** from kaggle dataset https://www.kaggle.com/plarmuseau/foods-definitions/version/2
 * **Nutrition facts** from USDA National Nutrient Database for Standard Reference, Release 27 https://fdc.nal.usda.gov/
 * **Live recipe of the day** from https://edamam.com
 * **Product Pictures** scraped from bing image search
 * **Html template** from https://colorlib.com/
+* **Deployed on Azure** https://foodstoren.azurewebsites.net/
 
 ---
 
@@ -52,6 +53,8 @@
     * Cache Utilities (view and clear cache)
     * Discounts Utilitites (Add / Remove discounts)
     * Manage Stickers
+    * Manage affiliate products
+    * IMport Products from 3'rd party API's
 * **Misc**
   * Auto daily discount worker with manageable properties
   * Auto recipe of the day with 3'rd party API
