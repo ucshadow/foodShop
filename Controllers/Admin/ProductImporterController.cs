@@ -19,7 +19,6 @@ namespace FoodStore.Controllers.Admin
 
             if (picked == "skagenfood.dk") _productImporter = new Skagenfood();
             if (picked == "coop.dk") _productImporter = new Coop();
-            if (picked == "coop.dk") _productImporter = new Coop();
             if (picked == "nemlig.com") _productImporter = new Nemlig();
 
             return View(_productImporter.GetProducts());

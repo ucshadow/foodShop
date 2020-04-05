@@ -37,12 +37,14 @@
     * Purchase history
     * Recipe of the day
     * Affiliate
+    * Affiliate Partners
     * Stickers
     * Comments
     * Ratings
     * Discounts
     * Nutrition Data
     * Real time search
+    * Direct Product import from 3'rd party API's 
 * **Admin**
     * On-site edit of product
     * On-site *add to discounts of the day*
@@ -104,6 +106,9 @@ to the external API)
 
 ##### Affiliate
 
+There are 2 types of affiliates:
+1. An affiliate that sells the products on this website from his website described as follows:
+
 You can become an affiliate and be offered an id and access to a CORS API to 
 use the site to sell products on your own site/app whatever IoT implementation.
 The API provides access to all products and products are shipped using 
@@ -116,6 +121,31 @@ The example is for demo only and it may fail if the data is incorect.
 The products you sold using the affiliate API are shown on the affiliate page.
 
 ![Affiliate](https://i.imgur.com/JSvUrlp.jpg "Affiliate")
+
+2. An affiliate that can sell his products using this website (just like Amazon sells products from 3'rd parties)
+
+This type of affiliate is more like a partner, but the functionality was added after the first type
+on top of the already present affiliate functionality, so it was left this way.
+This offers the posibility to register your own products on the foodShop website.
+To do so, you must register yourself as an affiliate and have an affiliate name (you can do this from the affiliate
+page). Now, you can click on Add Affiliate Product link, and be presented with a page where you can add a product
+following the standards of the Product on the foodStore website. When you save the product, it now shows on
+your affiliate products tab as *Pending approval* meaning an admin has to approve it for it to become
+an official product on the site.
+
+Now, an admin can go into the affiliate pannel on the admin side of the site and check if there are any 
+affiliate products waiting approval. If there are, he can then approve the product.
+Imediatly following the approval, the product is searchable and buyable in the main site and the 
+selling of the affiliate product(s) is tracked on the affiliate page of each affiliate.
+
+The admin affiliate interface offers a list of all products: approved, pending and rejected.
+
+![Affiliate](https://i.imgur.com/44EXDpY.jpg "Pending approval")
+![Affiliate](https://i.imgur.com/igmEQmf.jpg "Sell tracking")
+![Affiliate](https://i.imgur.com/iSNcWFU.jpg "Admin affiliate interface")
+
+Affiliates are a great way for a small start-up to grow and expand.
+
 
 ##### Stickers
 
@@ -210,3 +240,18 @@ pannel. This includes changinng the discounter parameters and adding and removin
 
 As an admin you can access the sticker panel and manage stickers.
 Work still in progress....
+
+##### Direct Product import from 3'rd party API's 
+
+As an admin you can directly import products from 3 food stores in Denmark directly from the admin panel.
+You can go on the admin pannel and click on *Import from competition* link. There you will be presented with 
+3 picks coop.dk, skagenfood.dk and nemlig.com 
+
+When going on either of those, the server connects to their unofficial API's and translates the
+API response into products that can be edited and saved as your product (with a better price of course).
+The API functionality is for demo purpose only and the traffic is keps at a minimum, so no real direct impact
+on the specified websites.
+
+Please keep in mind that external API's may change, so this may not work in the future.
+
+![Admin discount pannel](https://i.imgur.com/1NLpNC4.jpg "Admin import product") 
