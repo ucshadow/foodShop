@@ -13,9 +13,15 @@ namespace FoodStore.Infrastructure.LocalAPI
         public static List<Product> GetFooterData()
         {
             var res = new List<Product>();
+
+            if(GlobalProductCache.ProductCache.Count == 0)
+            {
+                return res;
+            }
+
             for(var i = 0; i < 6; i++)
             {
-                res.Add(GlobalProductCache.ProductCache[_rnd.Next(GlobalProductCache.ProductCache.Count - 1)]);
+                res.Add(GlobalProductCache.ProductCache[_rnd.Next(1, GlobalProductCache.ProductCache.Count - 1)]);
             }
             return res;
         }

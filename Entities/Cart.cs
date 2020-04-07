@@ -43,9 +43,6 @@ namespace FoodStore.Entities
         {
             CartEntries.Clear();
         }
-        public IEnumerable<CartEntry> Lines {
-            get { return CartEntries; }
-        }
     }
 
     public class CartEntry

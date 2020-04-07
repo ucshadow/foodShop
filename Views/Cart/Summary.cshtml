@@ -1,11 +1,12 @@
 ﻿
 @model FoodStore.Entities.Cart
 
-<div class="nav-item"><button><i class="ti-shopping-cart"></i>
-    <span class="nav-shop__circle">@Model.Lines.Sum(x => x.Quantity) item(s)</span></button> </div>
 <div class="nav-item">
-    @Html.ActionLink("Checkout", "Index", "Cart",
-    new { returnUrl = Request.Url.PathAndQuery },
-    new { @class = "btn btn-default navbar-btn" })
-    @Model.ComputeTotalValue().ToString()
-</a></div>
+    <a href="/Cart/Index"><i class="ti-shopping-cart"></i>
+        <span class="nav-shop__circle" id="cartItems">@Model.CartEntries.Sum(x => x.Quantity) item(s)</span>
+    </a>
+    <br/>
+    <span id="cartTotal">
+        @Model.ComputeTotalValue().ToString().Replace(",", ".")  kr.
+    </span>
+</div>

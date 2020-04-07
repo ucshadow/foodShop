@@ -23,9 +23,9 @@ namespace FoodStore.Infrastructure.LocalAPI
 
             // loading all the history is not good..but works for now
             LastSold = _context.PurchaseHistory
-              .OrderByDescending(e => e.PurchaseID)
               .GroupBy(e => e.ProductId) // remove duplicates so we wont end up with 4 asparagus pictures :)
               .Select(e => e.FirstOrDefault())
+              .OrderByDescending(e => e.PurchaseID)
               .Take(4).ToList();
            
             Init();
@@ -57,7 +57,7 @@ namespace FoodStore.Infrastructure.LocalAPI
             });
         }
 
-        public static void ReplaceOrUpdateTrackedProduct(Product product)
+        public static void ReplaceOrUpdateTrackedProduct(Product product, int quantity)
         {
 
             // if product exists, just update the counter
@@ -66,7 +66,7 @@ namespace FoodStore.Infrastructure.LocalAPI
             {
                 if(TrackedProducts[i].Product.ProductID == product.ProductID)
                 {
-                    TrackedProducts[i].Remaining -= 1;
+                    TrackedProducts[i].Remaining -= quantity;
                     return;
                 }
             }
@@ -78,24 +78,25 @@ namespace FoodStore.Infrastructure.LocalAPI
             {
                 Remaining = product.Quantity,
                 Product = product,
-                ID = product.ProductID + 1 // :D
+                ID = product.ProductID + 100000, // :D
+                AddedAt = DateTime.Now
             });
         }
 
         private static int FindAndRemoveMin()
         {
-            var curMin = int.MaxValue;
+            var curMin = DateTime.Now;
             foreach(var t in TrackedProducts)
             {
-                if(t.Product.ProductID <= curMin)
+                if(t.AddedAt <= curMin)
                 {
-                    curMin = t.Product.ProductID;
+                    curMin = t.AddedAt;
                 }
             }
 
             for(var i = 0; i < TrackedProducts.Count; i++)
             {
-                if(TrackedProducts.ElementAt(i).Product.ProductID == curMin)
+                if(TrackedProducts.ElementAt(i).AddedAt == curMin)
                 {
                     TrackedProducts.RemoveAt(i);
                     return i;
@@ -110,5 +111,6 @@ namespace FoodStore.Infrastructure.LocalAPI
         public Product Product { get; set; }
         public int Remaining { get; set; }
         public int ID { get; set; }
+        public DateTime AddedAt { get; set; }
     }
 }

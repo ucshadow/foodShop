@@ -18,7 +18,7 @@ namespace FoodStore.Controllers
     {
 
 
-        public readonly IProductRepository Repository;
+        private readonly IProductRepository _pRepository;
         private readonly IPurchaseHistoryRepository _purchaseHistoryRepository;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IPublicProfilesRepository _ppRepository;
@@ -31,7 +31,7 @@ namespace FoodStore.Controllers
             IPurchaseHistoryRepository pRepository, ICommentsRepository commentsRepository, 
             IAffiliateRepository affiliateRepository, IStickerRepository sticker)
         {
-            Repository = productRepository;
+            _pRepository = productRepository;
             _purchaseHistoryRepository = pRepository;
             _commentsRepository = commentsRepository;
             _ppRepository = ppRepository;
@@ -48,7 +48,7 @@ namespace FoodStore.Controllers
 
             if (q == null || q.Trim().Length == 0)
             {
-                products = Repository.Products
+                products = _pRepository.Products
                 .Where(p => category == null || p.Category == category)
                 .OrderBy(p => category == null ? Rnd.Next() : p.ProductID)
                 .Skip((page - 1) * PageSize)
@@ -62,7 +62,7 @@ namespace FoodStore.Controllers
                 {
                     x.Add(i);
                 }
-                var tempProducts = Repository.Products
+                var tempProducts = _pRepository.Products
                 .Where(p => p.Name.ToLower().Split(' ').ToHashSet().Intersect(x).Count() > 0);
 
                 searchReultsCount = tempProducts.Count();
@@ -157,11 +157,11 @@ namespace FoodStore.Controllers
 
             if (!(GlobalCache.GetCache().GetCachedItem<ProductModel>(productName) is ProductModel cached))
             {
-                var p = Repository.Products.FirstOrDefault(e => e.Name == productName);
+                var p = _pRepository.Products.FirstOrDefault(e => e.Name == productName);
                 var productDisplayed = new ProductModel
                 {
                     Product = p,
-                    Related = Repository.Products.Where(e => e.Category == p.Category).OrderBy(e => Rnd.Next()).Take(4).ToList(),
+                    Related = _pRepository.Products.Where(e => e.Category == p.Category).OrderBy(e => Rnd.Next()).Take(4).ToList(),
                     IsCommentAllowedForCurrentUser = IsAllowedToComment(p),
                     OldUserComments = _commentsRepository.GetUserComments(User.Identity.GetUserId()).ToList(),
                     IsUsserAffiliated = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId()) != null,                    
@@ -206,11 +206,11 @@ namespace FoodStore.Controllers
             }
             if(category == "Search Results")
             {
-                return Repository.Products
+                return _pRepository.Products
                     .Where(p => p.Name.ToLower().Contains(q.ToLower()))
                     .Count();
             }
-            return Repository.Products.Where(e => e.Category == category).Count();
+            return _pRepository.Products.Where(e => e.Category == category).Count();
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FoodStore.Infrastructure.Cache;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace FoodStore.Entities

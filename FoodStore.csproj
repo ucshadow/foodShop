@@ -237,7 +237,6 @@
     <Compile Include="Entities\PublicProfile.cs" />
     <Compile Include="Entities\Purchase.cs" />
     <Compile Include="Entities\Sticker.cs" />
-    <Compile Include="HtmlHelpers\FakeDataGenerators.cs" />
     <Compile Include="HtmlHelpers\IdentityExtensions.cs" />
     <Compile Include="HtmlHelpers\UniqueNameValidation.cs" />
     <Compile Include="Infrastructure\Cors.cs" />
@@ -415,6 +414,7 @@
     <Content Include="Scripts\affiliateExample.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cartHandler.js" />
     <Content Include="Scripts\free\vendors\fontawesome\webfonts\fa-brands-400.eot" />
     <Content Include="Scripts\free\vendors\fontawesome\webfonts\fa-brands-400.ttf" />
     <Content Include="Scripts\free\vendors\fontawesome\webfonts\fa-brands-400.woff" />

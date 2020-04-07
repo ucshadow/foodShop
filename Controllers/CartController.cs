@@ -10,6 +10,7 @@ using System.Diagnostics;
 using FoodStore.Abstract;
 using Microsoft.AspNet.Identity;
 using FoodStore.Infrastructure.Cache;
+using FoodStore.Infrastructure;
 
 namespace FoodStore.Controllers
 {
@@ -17,6 +18,7 @@ namespace FoodStore.Controllers
     {
         private readonly IProductRepository _repository;
         private readonly IOrderProcessor _orderProcessor;
+        private static readonly Cart _cart = new Cart();
 
         public CartController(IProductRepository repository, IOrderProcessor processor)
         {
@@ -24,40 +26,47 @@ namespace FoodStore.Controllers
             _orderProcessor = processor;
         }
 
-        public ViewResult Index(Cart cart, string returnUrl)
+        public ViewResult Index(string returnUrl)
         {
             return View(new CartIndexViewModel
             {
                 ReturnUrl = returnUrl,
-                Cart = cart
+                Cart = _cart
             });
         }
 
-        public RedirectToRouteResult AddToCart(Cart cart, int productId,string returnUrl)
+        [HttpPost]
+        public ActionResult AddToCart(int productId)
         {
             Product product = _repository.Products
             .FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                cart.AddItem(product, 1);                
+                _cart.AddItem(product, 1);                
             }
-            return RedirectToAction("Index", new { returnUrl });
+            return Json(new { _cart }, JsonRequestBehavior.AllowGet);
         }
 
-        public RedirectToRouteResult RemoveFromCart(Cart cart, int productId, string returnUrl)
+        [HttpPost]
+        public ActionResult ComputeCartValue()
+        {
+            return Json(new { total = _cart.ComputeTotalValue() }, JsonRequestBehavior.AllowGet);
+        }
+
+        public RedirectToRouteResult RemoveFromCart(int productId, string returnUrl)
         {
             Product product = _repository.Products
             .FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                cart.RemoveLine(product);
+                _cart.RemoveLine(product);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
 
-        public PartialViewResult Summary(Cart cart)
+        public PartialViewResult Summary()
         {
-            return PartialView(cart);
+            return PartialView(_cart);
         }
 
         public ViewResult Checkout()
@@ -67,21 +76,67 @@ namespace FoodStore.Controllers
 
         [HttpPost]
         [Authorize]
-        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
+        public ViewResult Checkout(ShippingDetails shippingDetails)
         {
-            if (cart.Lines.Count() == 0)
+            if (_cart.CartEntries.Count() == 0)
             {
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
-                _orderProcessor.ProcessOrder(cart, shippingDetails, userId);
+                _orderProcessor.ProcessOrder(_cart, shippingDetails, userId);
 
-                cart.Clear();
+                _cart.Clear();
                 return View("Completed");
             }
             return View(shippingDetails);
+        }
+
+        [HttpPost]
+        public ActionResult MinusItem(int productId)
+        {
+            
+            // check if the cart contains the item
+            if(_cart.CartEntries.FirstOrDefault(e => e.Product.ProductID == productId) == null)
+            {
+                return Json(new { id = productId, missing = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            foreach(var p in _cart.CartEntries)
+            {
+                if (p.Product.ProductID != productId) continue;
+                if(p.Quantity == 1)
+                {
+                    _cart.CartEntries.Remove(p);
+                    return Json(new { id = productId, missing = true }, JsonRequestBehavior.AllowGet);
+                }
+                p.Quantity -= 1;
+            }
+            return Json(new { id = productId, missing = false }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        // casted decimals as string beacuse javascript removes the 0 at the end
+        // so you end up with 10.6 instead of 10.60 on each update
+        [HttpPost]
+        public ActionResult GetCartTotalForCart()
+        {
+            // productID, totalPrice
+            var pidToTotal = new Dictionary<string, string>();
+            foreach(var entry in _cart.CartEntries)
+            {
+                pidToTotal[entry.Product.ProductID.ToString()] = ((
+                    entry.Product.Discount > 0 ?
+                    Helpers.CalculateDiscount(entry.Product.Price, entry.Product.Discount) :
+                    entry.Product.Price) * entry.Quantity).ToString();
+                
+            }
+
+            return Json(new { totalValue = _cart.ComputeTotalValue().ToString(),
+                totalProducts = _cart.CartEntries.Sum(x => x.Quantity),
+                pidToTotal,
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

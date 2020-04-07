@@ -135,6 +135,8 @@ following the standards of the Product on the foodStore website. When you save t
 your affiliate products tab as *Pending approval* meaning an admin has to approve it for it to become
 an official product on the site.
 
+![Affiliate](https://i.imgur.com/44EXDpY.jpg "Pending approval")
+
 On the main site, a Product that is sold by an affiliate has a sticker with the affiliate's name in []
 for example [best sweets]
 
@@ -147,7 +149,7 @@ selling of the affiliate product(s) is tracked on the affiliate page of each aff
 
 The admin affiliate interface offers a list of all products: approved, pending and rejected.
 
-![Affiliate](https://i.imgur.com/44EXDpY.jpg "Pending approval")
+
 ![Affiliate](https://i.imgur.com/igmEQmf.jpg "Sell tracking")
 ![Affiliate](https://i.imgur.com/iSNcWFU.jpg "Admin affiliate interface")
 

@@ -45,12 +45,10 @@
                 <p class="card-product__price">@Model.Price</p>
             }
 
-            @using (Html.BeginForm("AddToCart", "Cart"))
-            {
-                @Html.HiddenFor(x => x.ProductID)
-                @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
-                <button style="margin-bottom:5px;"><i class="ti-shopping-cart"></i>Add</button>
-            }
+
+            <div class="btn btn-warning" style="cursor:pointer; margin-bottom:5px; " onclick="addProduct(@Model.ProductID)">
+                <i class="ti-shopping-cart"></i><input style="background: none; border:none; cursor:pointer" type="submit" value="Add" />
+            </div>
 
             <div class="btn-danger" style="cursor:pointer">
                 <a href="@Url.Action("Nutrition", "Nutrition", new {productName = @Model.Name})">Nutrition data</a>

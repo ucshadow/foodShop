@@ -20,13 +20,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var line in Model.Cart.Lines)
+        @foreach (var line in Model.Cart.CartEntries)
         {
-        <tr>
-            <td class="text-center">@line.Quantity</td>
+        <tr id="@line.Product.ProductID">
+            <td class="text-center">
+                <button onclick="minusProduct(@line.Product.ProductID)">-</button>
+                <span id="@("q" + line.Product.ProductID)">@line.Quantity</span>
+                <button onclick="plusProduct(@line.Product.ProductID)">+</button>
+            </td>
             <td class="text-left">@line.Product.Name</td>
             <td class="text-right">@(Model.CalculateProductPriceWithDiscount(line.Product).ToString("c"))</td>
-            <td class="text-right">
+            <td class="text-right" id="@("subtotal" + line.Product.ProductID)">
                 @((line.Quantity * Model.CalculateProductPriceWithDiscount(line.Product)).ToString("c"))
             </td>
 
@@ -46,7 +50,7 @@
     <tfoot>
         <tr>
             <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">
+            <td class="text-right" id="cartTotalValue">
                 @Model.Cart.ComputeTotalValue().ToString("c")
             </td>
         </tr>
@@ -55,5 +59,4 @@
 <div class="text-center">
     <a class="btn btn-primary" href="/">Continue shopping</a>
     @Html.ActionLink("Checkout now", "Checkout", null, new { @class = "btn btn-primary" })
-<button class="btn btn-primary">Find recipes</button>
 </div>

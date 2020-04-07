@@ -9,6 +9,7 @@ using FoodStore.Entities;
 using FoodStore.Models;
 using FoodStore.Infrastructure;
 using System.Diagnostics;
+using FoodStore.Infrastructure.LocalAPI;
 
 namespace FoodStore.Controllers
 {
@@ -74,7 +75,7 @@ namespace FoodStore.Controllers
         [Cors]
         public ActionResult GetAllProducts()
         {
-            return Json(new { _pRepository.Products },
+            return Json(new { GlobalProductCache.ProductCache },
                 JsonRequestBehavior.AllowGet);
         }
 
@@ -127,7 +128,7 @@ namespace FoodStore.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-
+        [Authorize]
         public ActionResult Example()
         {
             var affiliate = _aRepository.GetAffiliateByUserId(User.Identity.GetUserId());

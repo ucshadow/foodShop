@@ -33,15 +33,16 @@ namespace FoodStore.Concrete
                     ProductId = e.Product.ProductID,
                     AffiliateId = e.Product.AffiliateId
                 };
-                e.Product.Quantity -= 1;
+                e.Product.Quantity -= e.Quantity;
                 _pRepository.SaveProduct(e.Product);
                 GlobalProductCache.UpdateProduct(e.Product);
-                RealTimeSellData.ReplaceOrUpdateTrackedProduct(e.Product);
+                RealTimeSellData.ReplaceOrUpdateTrackedProduct(e.Product, e.Quantity);
                 GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.Product.ProductID);
                 _prRepository.SavePurchase(ph);
             });
         }
 
+        // affiliate orders only come in one at a time
         public void ProcessAffiliateOrder(Product e, ShippingDetails shippingDetails, string affiliateId)
         {
             var ph = new Purchase
@@ -58,7 +59,7 @@ namespace FoodStore.Concrete
             e.Quantity -= 1;
             _pRepository.SaveProduct(e);
             GlobalProductCache.UpdateProduct(e);
-            RealTimeSellData.ReplaceOrUpdateTrackedProduct(e);
+            RealTimeSellData.ReplaceOrUpdateTrackedProduct(e, 1);
             GlobalCache.GetCache().ClearCachedItem<ProductModel>(e.ProductID);
             _prRepository.SavePurchase(ph);
         }

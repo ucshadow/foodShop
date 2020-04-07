@@ -4,50 +4,108 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>
-    Your affiliate id: @ViewBag.AffiliateId
-</h2>
+@if (ViewBag.AffiliateId != null)
+{
+    <h2>
+        Your affiliate id: @ViewBag.AffiliateId
+    </h2>
 
-<br />
-<br />
-<br />
-
-<div>
-    <h3 id="productName">Name: </h3>
-    <img id="productImage" src="#" />
-    <p id="productPrice">Price: </p>
-</div>
-
-<div>
-    <input type="text" placeholder="itemId" id="itemId" />
-    <button onclick="getProductById()"> Get </button>
-</div>
-
-<br/>
-<br/>
-<br/>
-<div>
-    <h1>
-        Delivery address
-    </h1>
+    <br />
+    <br />
+    <br />
 
     <div>
-        <input type="text" placeholder="Line 1" id="line1" required />
-        <br />
-        <input type="text" placeholder="Name" id="name" required />
-        <br />
-        <input type="text" placeholder="Country" id="country" required />
-        <br />
-        <br />
-        <br />
-        <input type="text" placeholder="how many you buy" id="count" required />
-        <br />
-        <input type="text" placeholder="Affiliate id" id="affiliateId" required />
-        <br />
-        <br />
-        <button onclick="sellItem()" class="btn btn-success"> Buy </button>
+        <h3 id="productName">Name: </h3>
+        <img id="productImage" src="#" />
+        <p id="productPrice">Price: </p>
     </div>
-</div>
 
-@Scripts.Render("~/Scripts/affiliateExample.js")
+    <div>
+        <input type="text" placeholder="itemId" id="itemId" />
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <div>
+        <h3 id="errors" style="color:red">-> </h3>
+        <h1>
+            Delivery address
+        </h1>
+
+        <div>
+            <input style="width:500px;" type="text" placeholder="Line 1" id="line1" required />
+            <br />
+            <input style="width:500px;" type="text" placeholder="Name" id="name" required />
+            <br />
+            <input style="width:500px;" type="text" placeholder="Country" id="country" required />
+            <br />
+            <br />
+            <br />
+            <input style="width:500px;" value="1" type="text" placeholder="how many you buy" id="count" required />
+            <br />
+            <input style="width:500px;" disabled name="affiliateId" type="text" value="@ViewBag.AffiliateId" id="affiliateId" required />
+            <br />
+            <br />
+            <button id="butt" onclick="sellItem()" class="btn btn-success"> Buy </button>
+        </div>
+    </div>
+
+
+
+    @Scripts.Render("~/Scripts/affiliateExample.js")
+
+    <script type="module">
+        import { html, Component, render } from 'https://unpkg.com/htm/preact/standalone.module.js';
+
+        class App extends Component {
+
+            constructor() {
+                super();
+                this.state = { products: [] }
+            }
+
+            componentDidMount() {
+                fetch(window.location.origin + '/Affiliate/GetAllProducts')
+                    .then(res => res.json()).then(res => this.setState({ products: res.ProductCache }));
+            }
+
+            selectProduct(e) {
+                document.getElementById('itemId').value = e;
+                getProductById();
+            }
+
+            toggleSendButton() {
+
+            }
+
+            showProducts() {
+                return this.state.products.map(p => {
+                    return html
+                        `
+                            <button style="font-size:0.8em; border:1px solid green; margin: 1px; padding: 1px"
+                                onClick=${() => this.selectProduct(p.ProductID)}
+                            > ${p.Name} </button>
+                        `;
+                })
+            }
+
+            render() {
+                return html`<div>
+                        <h1>Pick a product</h1>
+                        <h1>${this.state.selected && this.state.selected}</h1>
+                        <div style="max-height: 300px; overflow: auto">${this.showProducts()}</div>
+                    </div>`
+            }
+        }
+
+        render(html`<${App} />`, document.getElementsByClassName('site-main')[0]);
+    </script>
+}
+else
+{
+<h1>
+    You must be an affiliate to use this. Click on the Pages Menu and the Affiliate
+</h1>
+}
 

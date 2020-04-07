@@ -26,7 +26,7 @@
 
             let p = document.getElementById('i' + i)
             p.src = data[i].Product.Picture;
-            p.title = data[i].Remaining + ' remainig';
+            p.title = data[i].Product.Name;
 
             p.parentElement.href = '/Product/Details?productName=' + data[i].Product.Name;
 

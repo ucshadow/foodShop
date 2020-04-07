@@ -11,9 +11,6 @@ namespace FoodStore.Models
 
         public decimal CalculateProductPriceWithDiscount(Product p)
         {
-            Debug.WriteLine(p.Name);
-            Debug.WriteLine(p.Price);
-            Debug.WriteLine(p.Discount);
             if(p.Discount > 0)
             {
                 return Helpers.CalculateDiscount(p.Price, p.Discount);
