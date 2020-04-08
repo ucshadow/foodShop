@@ -12,19 +12,16 @@ namespace FoodStore.Controllers.Admin
     public class AdminAffiliateController : Controller
     {
         private readonly IAffiliateProductRepository _apRepository;
-        private readonly IProductRepository _pRepository;
 
-        public AdminAffiliateController(IAffiliateProductRepository affiliateProductRepository,
-            IProductRepository productRepository)
+        public AdminAffiliateController(IAffiliateProductRepository affiliateProductRepository)
         {
             _apRepository = affiliateProductRepository;
-            _pRepository = productRepository;
         }
 
         [HttpPost]
         public ActionResult Deny(int affiliateProductId)
         {
-            var ap = _apRepository.DenyAffiliateProduct(affiliateProductId);
+            _apRepository.DenyAffiliateProduct(affiliateProductId);
             return Redirect(Request.UrlReferrer.ToString());
         }
 
